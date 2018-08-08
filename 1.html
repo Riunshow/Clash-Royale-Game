@@ -1,0 +1,93 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Hello World</title>
+</head>
+
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
+    <script src="./pixi-spine.js"></script>
+    <script type="text/javascript">
+        let app = new PIXI.Application();
+        let tmpTime = 0
+
+        document
+            .body
+            .appendChild(app.view);
+
+        // load spine data
+        PIXI
+            .loader
+            .add('kings', './Sc-00/Sc_00.json')
+            .load(onAssetsLoaded);
+
+        // Enable interaction events for the DisplayObject. Touch, pointer and mouse
+        // events will not be emitted unless interactive is set to true.
+        app.stage.interactive = true;
+
+        // If enabled, the mouse cursor use the pointer behavior when hovered over the
+        // displayObject if it is interactive Setting this changes the 'cursor' property
+        // to 'pointer'.
+        app.stage.buttonMode = true;
+
+        function onAssetsLoaded(loader, res) {
+            let king = new PIXI
+                .spine
+                .Spine(res.kings.spineData);
+
+            // set current skin
+            king
+                .skeleton
+                .setSkinByName('King');
+
+            king
+                .skeleton
+                .setSlotsToSetupPose();
+
+            // set the position
+            king.x = 150;
+            king.y = 100;
+
+            king
+                .scale
+                .set(0.2);
+
+            app
+                .stage
+                .addChild(king);
+
+            // setAnimate(track, act_name, loop, delay);  WebGL
+
+            king
+                .state
+                .setAnimation(0, 'Idle', true);
+
+            app
+                .stage
+                .on('pointertap', function() {
+                    // change current skin
+                    // var currentSkinName = king.skeleton.skin.name;
+
+                    if (new Date().getTime() - tmpTime > 500) {
+                        console.log('慢')
+                        tmpTime = new Date().getTime()
+                        king
+                            .state
+                            .setAnimation(0, 'Idle', true);
+
+                    } else {
+                        console.log('快')
+                        tmpTime = new Date().getTime()
+                        king
+                            .state
+                            .addAnimation(0, 'Shaking', true, 0);
+                    }
+
+                });
+        }
+    </script>
+</body>
+
+</html>
