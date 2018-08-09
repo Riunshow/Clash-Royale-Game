@@ -8,20 +8,20 @@
 
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
-    <script src="./pixi-spine.js"></script>
+    <script src="./js/pixi-spine.js"></script>
     <script type="text/javascript">
         //
-        var time,
+        let time,
             speed,
             oldtime;
         oldtime = new Date().getTime();
 
-        var file = 0;
-        var data = 0;
+        let file = 0;
+        let data = 0;
 
         //
 
-        let app = new PIXI.Application();
+        let app = new PIXI.Application(window.innerWidth, window.innerHeight);
         let tmpTime = 0
 
         document
@@ -32,7 +32,19 @@
         PIXI
             .loader
             .add('kings', './Sc-00/Sc_00.json')
+            .add('kings2', './Sc-00/Sc_00.json')
             .load(onAssetsLoaded);
+
+        background = PIXI
+            .Sprite
+            .fromImage('./Sc-00/timg.png');
+        background
+            .scale
+            .set(1.5);
+        // background.visible = false;
+        app
+            .stage
+            .addChild(background);
 
         // Enable interaction events for the DisplayObject. Touch, pointer and mouse
         // events will not be emitted unless interactive is set to true.
@@ -40,10 +52,42 @@
 
         // If enabled, the mouse cursor use the pointer behavior when hovered over the
         // displayObject if it is interactive Setting this changes the 'cursor' property
-        // to 'pointer'.
-        app.stage.buttonMode = true;
+        // to 'pointer'. app.stage.buttonMode = true;
+
+        function contain(sprite, container) {
+
+            let collision = undefined;
+
+            //Left
+            if (sprite.x < container.x) {
+                sprite.x = container.x;
+                collision = "left";
+            }
+
+            //Top
+            if (sprite.y < container.y) {
+                sprite.y = container.y;
+                collision = "top";
+            }
+
+            //Right
+            if (sprite.x + sprite.width > container.width) {
+                sprite.x = container.width - sprite.width;
+                collision = "right";
+            }
+
+            //Bottom
+            if (sprite.y + sprite.height > container.height) {
+                sprite.y = container.height - sprite.height;
+                collision = "bottom";
+            }
+
+            //Return the `collision` value
+            return collision;
+        }
 
         function onAssetsLoaded(loader, res) {
+            // ******************* single king *******************
             let king = new PIXI
                 .spine
                 .Spine(res.kings.spineData);
@@ -58,22 +102,240 @@
                 .setSlotsToSetupPose();
 
             // set the position
-            king.x = 150;
-            king.y = 100;
+            var kingCage = new PIXI.Container();
+            kingCage.addChild(king);
 
+            let localRect = king.getLocalBounds();
             king
+                .position
+                .set(-localRect.x, -localRect.y);
+
+            king.vx = 0;
+            king.vy = 0;
+
+            kingCage
                 .scale
-                .set(0.2);
+                .set(0.5);
+
+            kingCage
+                .position
+                .set((app.screen.width - kingCage.width) * 0.5, (app.screen.height - kingCage.height) * 0.5);
 
             app
                 .stage
-                .addChild(king);
-
-            // addAnimation (int trackIndex, string animationName, bool loop, float delay)
+                .addChild(kingCage);
 
             king
                 .state
                 .setAnimation(0, 'Shaking', true);
+
+            // ******************* single king end ******************* *******************
+            // double king ******************* ------------ king2_1 ---------------
+            let king2_1 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king2_1
+                .skeleton
+                .setSkinByName('King');
+
+            king2_1
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage2_1 = new PIXI.Container();
+            kingCage2_1.addChild(king2_1);
+
+            let localRect2_1 = king2_1.getLocalBounds();
+            king2_1
+                .position
+                .set(-localRect2_1.x, -localRect2_1.y);
+
+            let scale2_1 = Math.min((app.screen.width * 0.5) / kingCage2_1.width, (app.screen.height * 0.35) / kingCage2_1.height);
+            kingCage2_1
+                .scale
+                .set(scale2_1, scale2_1);
+
+            kingCage2_1
+                .position
+                .set((app.screen.width - kingCage2_1.width) * 0.15, (app.screen.height - kingCage2_1.height) * 0.5);
+
+            king2_1
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ------------ king2_2 ---------------
+            let king2_2 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king2_2
+                .skeleton
+                .setSkinByName('King');
+
+            king2_2
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage2_2 = new PIXI.Container();
+            kingCage2_2.addChild(king2_2);
+
+            let localRect2_2 = king2_2.getLocalBounds();
+            king2_2
+                .position
+                .set(-localRect2_2.x, -localRect2_2.y);
+
+            let scale2_2 = Math.min((app.screen.width * 0.5) / kingCage2_2.width, (app.screen.height * 0.35) / kingCage2_2.height);
+            kingCage2_2
+                .scale
+                .set(scale2_2, scale2_2);
+
+            kingCage2_2
+                .position
+                .set((app.screen.width - kingCage2_2.width) * 0.45, (app.screen.height - kingCage2_2.height) * 0.5);
+
+            king2_2
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ******************* double king end ******************* *******************
+            // four king ******************* ------------ king4_1 ---------------
+            let king4_1 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king4_1
+                .skeleton
+                .setSkinByName('King');
+
+            king4_1
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage4_1 = new PIXI.Container();
+            kingCage4_1.addChild(king4_1);
+
+            let localRect4_1 = king4_1.getLocalBounds();
+            king4_1
+                .position
+                .set(-localRect4_1.x, -localRect4_1.y);
+
+            let scale4_1 = Math.min((app.screen.width * 0.5) / kingCage4_1.width, (app.screen.height * 0.35) / kingCage4_1.height);
+            kingCage4_1
+                .scale
+                .set(scale4_1, scale4_1);
+
+            kingCage4_1
+                .position
+                .set((app.screen.width - kingCage4_1.width) * 0.15, (app.screen.height - kingCage4_1.height) * 0.15);
+
+            king4_1
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ------------ king4_2 ---------------
+            let king4_2 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king4_2
+                .skeleton
+                .setSkinByName('King');
+
+            king4_2
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage4_2 = new PIXI.Container();
+            kingCage4_2.addChild(king4_2);
+
+            let localRect4_2 = king4_2.getLocalBounds();
+            king4_2
+                .position
+                .set(-localRect4_2.x, -localRect4_2.y);
+
+            let scale4_2 = Math.min((app.screen.width * 0.5) / kingCage4_2.width, (app.screen.height * 0.35) / kingCage4_2.height);
+            kingCage4_2
+                .scale
+                .set(scale4_2, scale4_2);
+
+            kingCage4_2
+                .position
+                .set((app.screen.width - kingCage4_2.width) * 0.85, (app.screen.height - kingCage4_2.height) * 0.15);
+
+            king4_2
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ------------ king4_3 ---------------
+            let king4_3 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king4_3
+                .skeleton
+                .setSkinByName('King');
+
+            king4_3
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage4_3 = new PIXI.Container();
+            kingCage4_3.addChild(king4_3);
+
+            let localRect4_3 = king4_3.getLocalBounds();
+            king4_3
+                .position
+                .set(-localRect4_3.x, -localRect4_3.y);
+
+            let scale4_3 = Math.min((app.screen.width * 0.5) / kingCage4_3.width, (app.screen.height * 0.35) / kingCage4_3.height);
+            kingCage4_3
+                .scale
+                .set(scale4_3, scale4_3);
+
+            kingCage4_3
+                .position
+                .set((app.screen.width - kingCage4_1.width) * 0.15, (app.screen.height - kingCage4_1.height) * 0.55);
+
+            king4_3
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ------------ king4_4 ---------------
+            let king4_4 = new PIXI
+                .spine
+                .Spine(res.kings2.spineData);
+            // set current skin ---- 2
+            king4_4
+                .skeleton
+                .setSkinByName('King');
+
+            king4_4
+                .skeleton
+                .setSlotsToSetupPose();
+            // set the position  ---- 2
+            var kingCage4_4 = new PIXI.Container();
+            kingCage4_4.addChild(king4_4);
+
+            let localRect4_4 = king4_4.getLocalBounds();
+            king4_4
+                .position
+                .set(-localRect4_4.x, -localRect4_4.y);
+
+            let scale4_4 = Math.min((app.screen.width * 0.5) / kingCage4_4.width, (app.screen.height * 0.35) / kingCage4_4.height);
+            kingCage4_4
+                .scale
+                .set(scale4_4, scale4_4);
+
+            kingCage4_4
+                .position
+                .set((app.screen.width - kingCage4_1.width) * 0.85, (app.screen.height - kingCage4_1.height) * 0.55);
+
+            king4_4
+                .state
+                .setAnimation(0, 'Shaking', true);
+
+            // ******************* four king end *******************
 
             function updata() {
                 switch (file) {
@@ -100,40 +362,130 @@
                 show(); //渲染视图
             }
 
-            var timer = setInterval(function() {
+            let timer = setInterval(function() {
                 updata(); //0.5更新一次状态
-            }, 300)
+            }, 500)
+
+            function LR2_2() {
+                console.log(king2_2.x, (app.screen.width - kingCage2_2.width) * 0.85)
+                if (king2_2.x <= (app.screen.width - kingCage2_2.width) * 0.85) {
+                    king2_2.x += 20
+                    requestAnimationFrame(LR2_2);
+                } else {
+                    console.log('boom LR2_2')
+                }
+            }
+
+            function RL2_2() {
+                console.log(king2_2.x, (app.screen.width - kingCage2_2.width) * 0.85)
+                if (king2_1.x < king2_2.x) {
+                    king2_2.x -= 20
+                    requestAnimationFrame(RL2_2);
+                } else {
+                    console.log('boom RL2_2')
+                }
+            }
+
+            function TB4_3() {
+                console.log(king4_3.y, (app.screen.height - kingCage4_3.height) * 0.85)
+                if (king4_3.y <= (app.screen.height - kingCage4_3.height) * 0.85) {
+                    king4_3.y += 20;
+                    requestAnimationFrame(TB4_3);
+                } else {
+                    console.log('boom TB4_3')
+                }
+            }
+
+            function BT4_3() {
+                console.log(king4_3.y, (app.screen.height - kingCage4_3.height) * 0.85)
+                if (king4_1.y < king4_3.y) {
+                    king4_3.y -= 20;
+                    requestAnimationFrame(BT4_3);
+                } else {
+                    console.log('boom BT4_3')
+                }
+            }
+
+            function TB4_4() {
+                console.log(king4_4.y, (app.screen.height - kingCage4_4.height) * 0.85)
+                if (king4_4.y <= (app.screen.height - kingCage4_4.height) * 0.85) {
+                    king4_4.y += 20;
+                    requestAnimationFrame(TB4_4);
+                } else {
+                    console.log('boom TB4_4')
+                }
+            }
+
+            function BT4_4() {
+                console.log(king4_4.y, (app.screen.height - kingCage4_4.height) * 0.85)
+                if (king4_2.y < king4_4.y) {
+                    king4_4.y -= 20;
+                    requestAnimationFrame(BT4_4);
+                } else {
+                    console.log('boom BT4_4')
+                }
+            }
+
+
+
+
 
             function show() { //渲染函数
+                console.log(data)
                 switch (data) {
-                    case 0:
-                        king.state.timeScale = 0.2
+                    case 1:
+                        king.state.timeScale = 0.8
+
                         break;
                     case 2:
-                        king.state.timeScale = 0.4
+                        king.state.timeScale = 1.2
                         break;
                     case 3:
-                        king.state.timeScale = 0.6
+                        king.state.timeScale = 1.6
+                        app
+                            .stage
+                            .removeChild(kingCage2_1, kingCage2_2);
+                        app
+                            .stage
+                            .addChild(kingCage);
                         break;
                     case 4:
-                        king.state.timeScale = 0.8
+                        RL2_2();
                         break;
                     case 5:
-                        king.state.timeScale = 1
                         break;
                     case 6:
-                        king.state.timeScale = 1.4
+                        king2_1.state.timeScale = 1.6
+                        king2_2.state.timeScale = 1.6
+
+                        app
+                            .stage
+                            .removeChild(kingCage, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                        app
+                            .stage
+                            .addChild(kingCage2_1, kingCage2_2);
+                        LR2_2();
                         break;
                     case 7:
-                        king.state.timeScale = 1.8
-
+                        BT4_3();
+                        BT4_4();
                         break;
                     case 8:
-                        king.state.timeScale = 2
-
                         break;
                     case 9:
-                        king.state.timeScale = 2.2
+                        king4_1.state.timeScale = 5;
+                        king4_2.state.timeScale = 5;
+                        king4_3.state.timeScale = 5;
+                        king4_4.state.timeScale = 5;
+                        app
+                            .stage
+                            .removeChild(kingCage2_1, kingCage2_2);
+                        TB4_3();
+                        TB4_4();
+                        app
+                            .stage
+                            .addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+
                         break;
                 }
             }
@@ -149,10 +501,8 @@
                         file = 0;
                     } else if (speed > 300) {
                         file = 1;
-                    } else if (speed > 1500) {
-                        file = 2;
                     } else {
-                        file = 3;
+                        file = 2;
                     }
                     oldtime = time;
                     time = null;
@@ -164,5 +514,12 @@
         // }
     </script>
 </body>
+<style>
+    html,
+    body {
+        margin: 0;
+        padding: 0;
+    }
+</style>
 
 </html>
