@@ -125,10 +125,6 @@
                 .stage
                 .addChild(kingCage);
 
-            king
-                .state
-                .setAnimation(0, 'Idle', true);
-
             // ******************* single king end ******************* *******************
             // double king ******************* ------------ king2_1 ---------------
             let king2_1 = new PIXI
@@ -425,21 +421,31 @@
                     console.log('boom BT4_4')
                 }
             }
+            king.state.setAnimation(0, 'Idle', true, 0);
+            king
+                .stateData
+                .setMix('Idle', 'Shaking', 0.3);
+            king
+                .stateData
+                .setMix('Shaking', 'Idle', 0.3);
 
             function show() { //渲染函数
                 console.log(data)
                 switch (data) {
+                    case 0:
+                        king.state.timeScale = 0.4
+                        break;
                     case 1:
-                        king.state.timeScale = 0.8
+                        king.state.setAnimation(0, 'Idle', true);
+                        king.state.timeScale = 0.4
                         break;
                     case 2:
-                        king
-                            .state
-                            .setAnimation(0, 'Idle', true);
-                        king.state.timeScale = 1.2
+                        king.state.setAnimation(0, 'Shaking', true);
+                        king.state.timeScale = 0.1
                         break;
                     case 3:
-                        king.state.timeScale = 1.6
+
+                        king.state.timeScale = 1.2
                         app
                             .stage
                             .removeChild(kingCage2_1, kingCage2_2);
@@ -448,9 +454,12 @@
                             .addChild(kingCage);
                         break;
                     case 4:
+                        king.state.timeScale = 1.4
                         RL2_2();
                         break;
                     case 5:
+
+
                         break;
                     case 6:
                         king2_1.state.timeScale = 1.6
@@ -465,16 +474,20 @@
                         LR2_2();
                         break;
                     case 7:
+                        king2_1.state.timeScale = 2.0
+                        king2_2.state.timeScale = 2.0
                         BT4_3();
                         BT4_4();
                         break;
                     case 8:
+                        king2_1.state.timeScale = 4.2
+                        king2_2.state.timeScale = 4.2
                         break;
                     case 9:
-                        king4_1.state.timeScale = 5;
-                        king4_2.state.timeScale = 5;
-                        king4_3.state.timeScale = 5;
-                        king4_4.state.timeScale = 5;
+                        king4_1.state.timeScale = 6;
+                        king4_2.state.timeScale = 6;
+                        king4_3.state.timeScale = 6;
+                        king4_4.state.timeScale = 6;
                         app
                             .stage
                             .removeChild(kingCage2_1, kingCage2_2);
@@ -483,7 +496,6 @@
                         app
                             .stage
                             .addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-
                         break;
                 }
             }
