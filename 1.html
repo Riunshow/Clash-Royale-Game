@@ -10,6 +10,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
     <script src="./pixi-spine.js"></script>
     <script type="text/javascript">
+        //
+        var time,
+            speed,
+            oldtime;
+        oldtime = new Date().getTime();
+
+        var file = 0;
+        var data = 0;
+
+        //
+
         let app = new PIXI.Application();
         let tmpTime = 0
 
@@ -58,35 +69,99 @@
                 .stage
                 .addChild(king);
 
-            // setAnimate(track, act_name, loop, delay);  WebGL
+            // addAnimation (int trackIndex, string animationName, bool loop, float delay)
 
             king
                 .state
-                .setAnimation(0, 'Idle', true);
+                .setAnimation(0, 'Shaking', true);
+
+            function updata() {
+                switch (file) {
+                    case 0:
+                        data -= 1;
+                        break;
+                    case 1:
+                        data -= 0;
+                        break;
+                    case 2:
+                        data += 1;
+                        break;
+                    case 3:
+                        data += 2;
+                        break;
+                }
+                file = 0; //更新档位
+                if (data <= 0) {
+                    data = 0;
+                }
+                if (data >= 9) {
+                    data = 9;
+                }
+                show(); //渲染视图
+            }
+
+            var timer = setInterval(function() {
+                updata(); //0.5更新一次状态
+            }, 300)
+
+            function show() { //渲染函数
+                switch (data) {
+                    case 0:
+                        king.state.timeScale = 0.2
+                        break;
+                    case 2:
+                        king.state.timeScale = 0.4
+                        break;
+                    case 3:
+                        king.state.timeScale = 0.6
+                        break;
+                    case 4:
+                        king.state.timeScale = 0.8
+                        break;
+                    case 5:
+                        king.state.timeScale = 1
+                        break;
+                    case 6:
+                        king.state.timeScale = 1.4
+                        break;
+                    case 7:
+                        king.state.timeScale = 1.8
+
+                        break;
+                    case 8:
+                        king.state.timeScale = 2
+
+                        break;
+                    case 9:
+                        king.state.timeScale = 2.2
+                        break;
+                }
+            }
+
+            //
 
             app
                 .stage
                 .on('pointertap', function() {
-                    // change current skin
-                    // var currentSkinName = king.skeleton.skin.name;
-
-                    if (new Date().getTime() - tmpTime > 500) {
-                        console.log('慢')
-                        tmpTime = new Date().getTime()
-                        king
-                            .state
-                            .setAnimation(0, 'Idle', true);
-
+                    time = new Date().getTime();
+                    speed = time - oldtime;
+                    if (speed > 500) {
+                        file = 0;
+                    } else if (speed > 300) {
+                        file = 1;
+                    } else if (speed > 1500) {
+                        file = 2;
                     } else {
-                        console.log('快')
-                        tmpTime = new Date().getTime()
-                        king
-                            .state
-                            .addAnimation(0, 'Shaking', true, 0);
+                        file = 3;
                     }
+                    oldtime = time;
+                    time = null;
 
-                });
-        }
+                })
+
+        };
+
+        // }
     </script>
 </body>
 
