@@ -127,7 +127,7 @@
 
             king
                 .state
-                .setAnimation(0, 'Shaking', true);
+                .setAnimation(0, 'Idle', true);
 
             // ******************* single king end ******************* *******************
             // double king ******************* ------------ king2_1 ---------------
@@ -426,18 +426,16 @@
                 }
             }
 
-
-
-
-
             function show() { //渲染函数
                 console.log(data)
                 switch (data) {
                     case 1:
                         king.state.timeScale = 0.8
-
                         break;
                     case 2:
+                        king
+                            .state
+                            .setAnimation(0, 'Idle', true);
                         king.state.timeScale = 1.2
                         break;
                     case 3:
@@ -515,8 +513,8 @@
     </script>
 </body>
 <style>
-    html,
-    body {
+    body,
+    html {
         margin: 0;
         padding: 0;
     }
