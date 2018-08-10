@@ -7,13 +7,8 @@
 </head>
 
 <body>
-    <div id='head'>
-        状态栏和标题栏占位
-    </div>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
     <script src="./js/pixi-spine.js"></script>
-    <script src="./js/pixi-layer.js"></script>
     <script type="text/javascript">
         const img_1_width = 92;
         //
@@ -28,7 +23,7 @@
         let clickCount = 0;
         //
 
-        let app = new PIXI.Application(window.innerWidth, window.innerHeight - 120);
+        let app = new PIXI.Application(window.innerWidth, window.innerHeight);
         let tmpTime = 0;
 
         document
@@ -243,7 +238,8 @@
                 .position
                 .set(-localRect2_1.x, -localRect2_1.y);
 
-            let scale2_1 = Math.min((app.screen.width * 0.5) / kingCage2_1.width, (app.screen.height * 0.35) / kingCage2_1.height);
+            let scale2_1 = Math.min((app.screen.width * 0.5) / kingCage2_1.width, (app.screen.height * 0.35) /
+                kingCage2_1.height);
             kingCage2_1
                 .scale
                 .set(scale2_1, scale2_1);
@@ -304,7 +300,8 @@
                 .position
                 .set(-localRect2_2.x, -localRect2_2.y);
 
-            let scale2_2 = Math.min((app.screen.width * 0.5) / kingCage2_2.width, (app.screen.height * 0.35) / kingCage2_2.height);
+            let scale2_2 = Math.min((app.screen.width * 0.5) / kingCage2_2.width, (app.screen.height * 0.35) /
+                kingCage2_2.height);
             kingCage2_2
                 .scale
                 .set(scale2_2, scale2_2);
@@ -624,21 +621,30 @@
                 .setMix('Shaking', 'Idle', 2);
 
             function show() { //渲染函数
+                // console.log('data', data, king.state.timeScale, king2_2.state.timeScale, king2_1.state.timeScale);
                 switch (data) {
                     case 0:
-                        king.state.timeScale = 1
+                        // console.log(file)
+                        king.state.timeScale = 0.1
+
                         break;
                     case 1:
-                        king
-                            .state
-                            .setAnimation(0, 'Idle', true);
-                        king.state.timeScale = 1
+                        // console.log(file)
+                        if (file == 0 || file == 1) {
+                            king.state.setAnimation(0, 'Idle', true);
+                        }
+                        if (file == 2) {
+                            king.state.setAnimation(0, 'Shaking', true);
+                        }
+                        king.state.timeScale = 1.4
                         break;
                     case 2:
-                        king
-                            .state
-                            .setAnimation(0, 'Shaking', true);
-                        king.state.timeScale = 0.1
+
+                        king.state.timeScale = 1.6
+
+                        break;
+                    case 3:
+
                         if (file == 0) {
                             app
                                 .stage
@@ -647,9 +653,12 @@
                                 .stage
                                 .addChild(kingCage);
                         }
+                        king.state.timeScale = 1.8
+                        king2_1.state.timeScale = 2.6
+                        king2_2.state.timeScale = 2.6
                         break;
-                    case 3:
-                        king.state.timeScale = 1.2
+                    case 4:
+
                         if (file == 2) {
                             app
                                 .stage
@@ -657,17 +666,18 @@
                             app
                                 .stage
                                 .addChild(kingCage2_1, kingCage2_2);
+
                         }
-                        break;
-                    case 4:
-                        king.state.timeScale = 1.4
+                        king.state.timeScale = 2.0
+                        king2_1.state.timeScale = 2.6
+                        king2_2.state.timeScale = 2.6
                         break;
                     case 5:
+                        king.state.timeScale = 2.4
 
                         break;
                     case 6:
-                        king2_1.state.timeScale = 1.6
-                        king2_2.state.timeScale = 1.6
+
                         if (file == 0) {
                             app
                                 .stage
@@ -676,10 +686,16 @@
                                 .stage
                                 .addChild(kingCage2_1, kingCage2_2);
                         }
+                        king2_1.state.timeScale = 2.6
+                        king2_2.state.timeScale = 2.6
+                        king4_1.state.timeScale = 4;
+                        king4_2.state.timeScale = 4;
+                        king4_3.state.timeScale = 4;
+                        king4_4.state.timeScale = 4;
                         break;
                     case 7:
-                        king2_1.state.timeScale = 2.0
-                        king2_2.state.timeScale = 2.0
+                        king2_1.state.timeScale = 2.8
+                        king2_2.state.timeScale = 2.8
                         if (file == 2) {
                             app
                                 .stage
@@ -692,18 +708,13 @@
                     case 8:
                         king2_1.state.timeScale = 4.2
                         king2_2.state.timeScale = 4.2
+
                         break;
                     case 9:
                         king4_1.state.timeScale = 6;
                         king4_2.state.timeScale = 6;
                         king4_3.state.timeScale = 6;
                         king4_4.state.timeScale = 6;
-                        app
-                            .stage
-                            .removeChild(kingCage2_1, kingCage2_2);
-                        app
-                            .stage
-                            .addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
                         break;
                 }
             }
@@ -713,24 +724,27 @@
             app
                 .stage
                 .on('pointertap', function() {
-                    // 点击 +1
-                    clickCount++;
-                    scoretext.text = clickCount;
-                    console.log('点击了：', clickCount);
+
                     // 显示 +1
-                    if (data < 3) {
+                    if (data < 4) {
+                        clickCount++;
+                        scoretext.text = clickCount;
                         app
                             .stage
                             .addChild(clickScore1_1);
                         addScoreTop1_1();
 
-                    } else if (data < 7 && data >= 3) {
+                    } else if (data < 7 && data >= 4) {
+                        clickCount += 2;
+                        scoretext.text = clickCount;
                         app
                             .stage
                             .addChild(clickScore2_1, clickScore2_2);
                         addScoreTop2_1();
                         addScoreTop2_2();
                     } else {
+                        clickCount += 4;
+                        scoretext.text = clickCount;
                         app
                             .stage
                             .addChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4);
@@ -742,10 +756,10 @@
 
                     time = new Date().getTime();
                     speed = time - oldtime;
-                    if (speed > 500) {
+                    if (speed > 300) {
 
                         file = 0;
-                    } else if (speed > 300) {
+                    } else if (speed > 200) {
                         file = 1;
                     } else {
                         file = 2;
