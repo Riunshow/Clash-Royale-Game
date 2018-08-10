@@ -7,9 +7,15 @@
 </head>
 
 <body>
+    <div id='head'>
+        状态栏和标题栏占位
+    </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/4.7.1/pixi.min.js"></script>
     <script src="./js/pixi-spine.js"></script>
+    <script src="./js/pixi-layer.js"></script>
     <script type="text/javascript">
+        const img_1_width = 92;
         //
         let time,
             speed,
@@ -19,10 +25,11 @@
         let file = 0;
         let data = 0;
 
+        let clickCount = 0;
         //
 
-        let app = new PIXI.Application(window.innerWidth, window.innerHeight);
-        let tmpTime = 0
+        let app = new PIXI.Application(window.innerWidth, window.innerHeight - 120);
+        let tmpTime = 0;
 
         document
             .body
@@ -32,61 +39,128 @@
         PIXI
             .loader
             .add('kings', './Sc-00/Sc_00.json')
-            .add('kings2', './Sc-00/Sc_00.json')
             .load(onAssetsLoaded);
 
-        background = PIXI
+        // bg1
+        let background1 = PIXI
             .Sprite
-            .fromImage('./Sc-00/timg.png');
-        background
+            .fromImage('./img/bg1.jpg');
+        background1
             .scale
             .set(1.5);
-        // background.visible = false;
         app
             .stage
-            .addChild(background);
+            .addChild(background1);
 
-        // Enable interaction events for the DisplayObject. Touch, pointer and mouse
-        // events will not be emitted unless interactive is set to true.
+        // bg2
+        let background2 = PIXI
+            .Sprite
+            .fromImage('./img/bg2.jpg');
+        background2
+            .scale
+            .set(1.5);
+        app
+            .stage
+            .addChild(background2);
+
+        function changeBgImg() {
+            if (loadprogress <= 0.75) {
+                app.stage.swapChildren(background2, background1)
+            } else {
+                window.clearInterval(timeBgImg);
+            }
+        }
+        let timeBgImg = setInterval("changeBgImg()", "3000");
+
+        // Basic layout 
+        let timebar = PIXI.Sprite.fromImage('./img/timebar.png')
+        timebar.anchor.set(0.5, 0.5); //修正定位点
+        timebar.scale.set(1.5);
+        timebar.position.set((app.screen.width) * 0.5, 60);
+        app.stage.addChild(timebar);
+
+        let timetext = new PIXI.Text('0:15', {
+            fontWeight: 'bold',
+            fontStyle: 'italic',
+            fontSize: 70,
+            fontFamily: 'myfont',
+            fill: '#fff',
+            align: 'center',
+            stroke: '#000',
+            strokeThickness: 7
+        })
+
+        timetext.anchor.set(0.5);
+        timetext.x = app.screen.width / 2;
+        timetext.y = 95;
+        app.stage.addChild(timetext)
+
+        const loadbgWH = 0.25; //加载背景图长宽比 
+        let loadbg = PIXI.Sprite.fromImage('./img/loadbg.png')
+        loadbg.anchor.set(0, 1); //修正定位点
+        loadbg.width = app.screen.width;
+        loadbg.height = app.screen.width * 0.25;
+        loadbg.zOrder = 1;
+
+        let scoretext = new PIXI.Text('0', {
+            fontWeight: 'bold',
+            fontStyle: 'italic',
+            fontSize: 75,
+            fontFamily: 'myfont',
+            fill: '#fff',
+            align: 'center',
+            stroke: '#000',
+            strokeThickness: 7
+        })
+        scoretext.anchor.set(0.5);
+        scoretext.x = app.screen.width * 0.29;
+        scoretext.y = -(app.screen.width * loadbgWH * 0.6);
+
+        let loadwiter = PIXI.Sprite.fromImage('./img/loadwiter.png')
+        loadwiter.scale.set(1.3);
+        loadwiter.anchor.set(0, 1);
+        loadwiter.zOrder = 2;
+        loadwiter.position.set(app.screen.width * 0.1, -(app.screen.width * loadbgWH * 0.25));
+        let load = PIXI.Sprite.fromImage('./img/load.png')
+        load.anchor.set(0, 1);
+        load.width = app.screen.width * 0.1;
+        let loadprogress = 0.1;
+
+        let countdown = 15;
+
+        function loadtime() {
+            loadprogress += 0.0433
+            if (loadprogress <= 0.75) {
+                load.width = app.screen.width * loadprogress;
+                countdown -= 1;
+                timetext.text = '0:' + countdown;
+            } else {
+                window.clearInterval(time1);
+            }
+        }
+        let time1 = setInterval("loadtime()", "1000");
+
+
+        load.position.set(app.screen.width * 0.15, -(app.screen.width * loadbgWH * 0.38));
+
+        let loadcontainer = new PIXI.Container();
+        loadcontainer.width = app.screen.width;
+        loadcontainer.width = app.screen.width;
+        loadcontainer.height = app.screen.width * loadbgWH;
+        loadcontainer.position.set(0, app.screen.height);
+        app.stage.addChild(loadcontainer);
+        loadcontainer.addChild(loadbg);
+        loadcontainer.addChild(load);
+        loadcontainer.addChild(loadwiter);
+        loadcontainer.addChild(scoretext);
         app.stage.interactive = true;
 
-        // If enabled, the mouse cursor use the pointer behavior when hovered over the
-        // displayObject if it is interactive Setting this changes the 'cursor' property
-        // to 'pointer'. app.stage.buttonMode = true;
 
-        function contain(sprite, container) {
 
-            let collision = undefined;
-
-            //Left
-            if (sprite.x < container.x) {
-                sprite.x = container.x;
-                collision = "left";
-            }
-
-            //Top
-            if (sprite.y < container.y) {
-                sprite.y = container.y;
-                collision = "top";
-            }
-
-            //Right
-            if (sprite.x + sprite.width > container.width) {
-                sprite.x = container.width - sprite.width;
-                collision = "right";
-            }
-
-            //Bottom
-            if (sprite.y + sprite.height > container.height) {
-                sprite.y = container.height - sprite.height;
-                collision = "bottom";
-            }
-
-            //Return the `collision` value
-            return collision;
-        }
-
+        //  app.stage.buttonMode = true;
         function onAssetsLoaded(loader, res) {
+
+
             // ******************* single king *******************
             let king = new PIXI
                 .spine
@@ -96,11 +170,9 @@
             king
                 .skeleton
                 .setSkinByName('King');
-
             king
                 .skeleton
                 .setSlotsToSetupPose();
-
             // set the position
             var kingCage = new PIXI.Container();
             kingCage.addChild(king);
@@ -110,26 +182,50 @@
                 .position
                 .set(-localRect.x, -localRect.y);
 
-            king.vx = 0;
-            king.vy = 0;
-
             kingCage
                 .scale
-                .set(0.5);
+                .set(0.4);
 
             kingCage
                 .position
-                .set((app.screen.width - kingCage.width) * 0.5, (app.screen.height - kingCage.height) * 0.5);
+                .set((app.screen.width - kingCage.width) * 0.5, (app.screen.height - kingCage.height) * 0.45);
 
             app
                 .stage
                 .addChild(kingCage);
 
+            // +1 img 1_1
+
+            let clickScore1_1 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore1_1
+                .position
+                .set((app.screen.width - img_1_width) * 0.5, (app.screen.height - clickScore1_1.height) * 0.2);
+
+            function addScoreTop1_1() {
+                if (clickScore1_1.y >= (app.screen.height - clickScore1_1.height) * 0.15) {
+                    clickScore1_1.y -= 10;
+                    requestAnimationFrame(addScoreTop1_1);
+                } else {
+
+                    clickScore1_1
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.5, (app.screen.height - clickScore1_1.height) * 0.2);
+
+                    app
+                        .stage
+                        .removeChild(clickScore1_1);
+
+                }
+            }
+
             // ******************* single king end ******************* *******************
             // double king ******************* ------------ king2_1 ---------------
             let king2_1 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king2_1
                 .skeleton
@@ -160,10 +256,37 @@
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 2_1
+
+            let clickScore2_1 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore2_1
+                .position
+                .set((app.screen.width - img_1_width) * 0.25, (app.screen.height - clickScore1_1.height) * 0.3);
+
+            function addScoreTop2_1() {
+                if (clickScore2_1.y >= (app.screen.height - clickScore2_1.height) * 0.25) {
+                    clickScore2_1.y -= 10;
+                    requestAnimationFrame(addScoreTop2_1);
+                } else {
+
+                    clickScore2_1
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.25, (app.screen.height - clickScore2_1.height) * 0.3);
+
+                    app
+                        .stage
+                        .removeChild(clickScore2_1);
+
+                }
+            }
+
             // ------------ king2_2 ---------------
             let king2_2 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king2_2
                 .skeleton
@@ -188,17 +311,44 @@
 
             kingCage2_2
                 .position
-                .set((app.screen.width - kingCage2_2.width) * 0.45, (app.screen.height - kingCage2_2.height) * 0.5);
+                .set((app.screen.width - kingCage2_2.width) * 0.85, (app.screen.height - kingCage2_2.height) * 0.5);
 
             king2_2
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 2_2
+
+            let clickScore2_2 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore2_2
+                .position
+                .set((app.screen.width - img_1_width) * 0.75, (app.screen.height - clickScore1_1.height) * 0.3);
+
+            function addScoreTop2_2() {
+                if (clickScore2_2.y >= (app.screen.height - clickScore2_2.height) * 0.25) {
+                    clickScore2_2.y -= 10;
+                    requestAnimationFrame(addScoreTop2_2);
+                } else {
+
+                    clickScore2_2
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.75, (app.screen.height - clickScore2_2.height) * 0.3);
+
+                    app
+                        .stage
+                        .removeChild(clickScore2_2);
+
+                }
+            }
+
             // ******************* double king end ******************* *******************
             // four king ******************* ------------ king4_1 ---------------
             let king4_1 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king4_1
                 .skeleton
@@ -216,23 +366,48 @@
                 .position
                 .set(-localRect4_1.x, -localRect4_1.y);
 
-            let scale4_1 = Math.min((app.screen.width * 0.5) / kingCage4_1.width, (app.screen.height * 0.35) / kingCage4_1.height);
             kingCage4_1
                 .scale
-                .set(scale4_1, scale4_1);
+                .set(0.2);
 
             kingCage4_1
                 .position
-                .set((app.screen.width - kingCage4_1.width) * 0.15, (app.screen.height - kingCage4_1.height) * 0.15);
+                .set((app.screen.width - kingCage4_1.width) * 0.2, (app.screen.height - kingCage4_1.height) * 0.25);
 
             king4_1
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 4_1
+
+            let clickScore4_1 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore4_1
+                .position
+                .set((app.screen.width - img_1_width) * 0.3, (app.screen.height - clickScore1_1.height) * 0.15);
+
+            function addScoreTop4_1() {
+                if (clickScore4_1.y >= (app.screen.height - clickScore4_1.height) * 0.1) {
+                    clickScore4_1.y -= 10;
+                    requestAnimationFrame(addScoreTop4_1);
+                } else {
+
+                    clickScore4_1
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.3, (app.screen.height - clickScore4_1.height) * 0.15);
+
+                    app
+                        .stage
+                        .removeChild(clickScore4_1);
+
+                }
+            }
             // ------------ king4_2 ---------------
             let king4_2 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king4_2
                 .skeleton
@@ -250,23 +425,48 @@
                 .position
                 .set(-localRect4_2.x, -localRect4_2.y);
 
-            let scale4_2 = Math.min((app.screen.width * 0.5) / kingCage4_2.width, (app.screen.height * 0.35) / kingCage4_2.height);
             kingCage4_2
                 .scale
-                .set(scale4_2, scale4_2);
+                .set(0.2);
 
             kingCage4_2
                 .position
-                .set((app.screen.width - kingCage4_2.width) * 0.85, (app.screen.height - kingCage4_2.height) * 0.15);
+                .set((app.screen.width - kingCage4_2.width) * 0.8, (app.screen.height - kingCage4_2.height) * 0.25);
 
             king4_2
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 4_2
+
+            let clickScore4_2 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore4_2
+                .position
+                .set((app.screen.width - img_1_width) * 0.8, (app.screen.height - clickScore1_1.height) * 0.15);
+
+            function addScoreTop4_2() {
+                if (clickScore4_2.y >= (app.screen.height - clickScore4_2.height) * 0.1) {
+                    clickScore4_2.y -= 10;
+                    requestAnimationFrame(addScoreTop4_2);
+                } else {
+
+                    clickScore4_2
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.8, (app.screen.height - clickScore4_2.height) * 0.15);
+
+                    app
+                        .stage
+                        .removeChild(clickScore4_2);
+
+                }
+            }
             // ------------ king4_3 ---------------
             let king4_3 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king4_3
                 .skeleton
@@ -284,23 +484,48 @@
                 .position
                 .set(-localRect4_3.x, -localRect4_3.y);
 
-            let scale4_3 = Math.min((app.screen.width * 0.5) / kingCage4_3.width, (app.screen.height * 0.35) / kingCage4_3.height);
             kingCage4_3
                 .scale
-                .set(scale4_3, scale4_3);
+                .set(0.2);
 
             kingCage4_3
                 .position
-                .set((app.screen.width - kingCage4_1.width) * 0.15, (app.screen.height - kingCage4_1.height) * 0.55);
+                .set((app.screen.width - kingCage4_1.width) * 0.2, (app.screen.height - kingCage4_1.height) * 0.7);
 
             king4_3
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 4_3
+
+            let clickScore4_3 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore4_3
+                .position
+                .set((app.screen.width - img_1_width) * 0.3, (app.screen.height - clickScore1_1.height) * 0.5);
+
+            function addScoreTop4_3() {
+                if (clickScore4_3.y >= (app.screen.height - clickScore4_3.height) * 0.45) {
+                    clickScore4_3.y -= 10;
+                    requestAnimationFrame(addScoreTop4_3);
+                } else {
+
+                    clickScore4_3
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.3, (app.screen.height - clickScore4_3.height) * 0.5);
+
+                    app
+                        .stage
+                        .removeChild(clickScore4_3);
+
+                }
+            }
             // ------------ king4_4 ---------------
             let king4_4 = new PIXI
                 .spine
-                .Spine(res.kings2.spineData);
+                .Spine(res.kings.spineData);
             // set current skin ---- 2
             king4_4
                 .skeleton
@@ -318,19 +543,44 @@
                 .position
                 .set(-localRect4_4.x, -localRect4_4.y);
 
-            let scale4_4 = Math.min((app.screen.width * 0.5) / kingCage4_4.width, (app.screen.height * 0.35) / kingCage4_4.height);
             kingCage4_4
                 .scale
-                .set(scale4_4, scale4_4);
+                .set(0.2);
 
             kingCage4_4
                 .position
-                .set((app.screen.width - kingCage4_1.width) * 0.85, (app.screen.height - kingCage4_1.height) * 0.55);
+                .set((app.screen.width - kingCage4_1.width) * 0.8, (app.screen.height - kingCage4_1.height) * 0.7);
 
             king4_4
                 .state
                 .setAnimation(0, 'Shaking', true);
 
+            // +1 img 4_4
+
+            let clickScore4_4 = PIXI
+                .Sprite
+                .fromImage('./img/1.png');
+
+            clickScore4_4
+                .position
+                .set((app.screen.width - img_1_width) * 0.8, (app.screen.height - clickScore1_1.height) * 0.5);
+
+            function addScoreTop4_4() {
+                if (clickScore4_4.y >= (app.screen.height - clickScore4_4.height) * 0.45) {
+                    clickScore4_4.y -= 10;
+                    requestAnimationFrame(addScoreTop4_4);
+                } else {
+
+                    clickScore4_4
+                        .position
+                        .set((app.screen.width - img_1_width) * 0.8, (app.screen.height - clickScore4_4.height) * 0.5);
+
+                    app
+                        .stage
+                        .removeChild(clickScore4_4);
+
+                }
+            }
             // ******************* four king end *******************
 
             function updata() {
@@ -348,7 +598,7 @@
                         data += 2;
                         break;
                 }
-                file = 0; //更新档位
+
                 if (data <= 0) {
                     data = 0;
                 }
@@ -356,128 +606,88 @@
                     data = 9;
                 }
                 show(); //渲染视图
+                file = 0; //更新档位
             }
 
             let timer = setInterval(function() {
                 updata(); //0.5更新一次状态
             }, 500)
 
-            function LR2_2() {
-                console.log(king2_2.x, (app.screen.width - kingCage2_2.width) * 0.85)
-                if (king2_2.x <= (app.screen.width - kingCage2_2.width) * 0.85) {
-                    king2_2.x += 20
-                    requestAnimationFrame(LR2_2);
-                } else {
-                    console.log('boom LR2_2')
-                }
-            }
-
-            function RL2_2() {
-                console.log(king2_2.x, (app.screen.width - kingCage2_2.width) * 0.85)
-                if (king2_1.x < king2_2.x) {
-                    king2_2.x -= 20
-                    requestAnimationFrame(RL2_2);
-                } else {
-                    console.log('boom RL2_2')
-                }
-            }
-
-            function TB4_3() {
-                console.log(king4_3.y, (app.screen.height - kingCage4_3.height) * 0.85)
-                if (king4_3.y <= (app.screen.height - kingCage4_3.height) * 0.85) {
-                    king4_3.y += 20;
-                    requestAnimationFrame(TB4_3);
-                } else {
-                    console.log('boom TB4_3')
-                }
-            }
-
-            function BT4_3() {
-                console.log(king4_3.y, (app.screen.height - kingCage4_3.height) * 0.85)
-                if (king4_1.y < king4_3.y) {
-                    king4_3.y -= 20;
-                    requestAnimationFrame(BT4_3);
-                } else {
-                    console.log('boom BT4_3')
-                }
-            }
-
-            function TB4_4() {
-                console.log(king4_4.y, (app.screen.height - kingCage4_4.height) * 0.85)
-                if (king4_4.y <= (app.screen.height - kingCage4_4.height) * 0.85) {
-                    king4_4.y += 20;
-                    requestAnimationFrame(TB4_4);
-                } else {
-                    console.log('boom TB4_4')
-                }
-            }
-
-            function BT4_4() {
-                console.log(king4_4.y, (app.screen.height - kingCage4_4.height) * 0.85)
-                if (king4_2.y < king4_4.y) {
-                    king4_4.y -= 20;
-                    requestAnimationFrame(BT4_4);
-                } else {
-                    console.log('boom BT4_4')
-                }
-            }
-            king.state.setAnimation(0, 'Idle', true, 0);
+            king
+                .state
+                .setAnimation(0, 'Idle', true, 0);
             king
                 .stateData
-                .setMix('Idle', 'Shaking', 0.3);
+                .setMix('Idle', 'Shaking', 2);
             king
                 .stateData
-                .setMix('Shaking', 'Idle', 0.3);
+                .setMix('Shaking', 'Idle', 2);
 
             function show() { //渲染函数
-                console.log(data)
                 switch (data) {
                     case 0:
-                        king.state.timeScale = 0.4
+                        king.state.timeScale = 1
                         break;
                     case 1:
-                        king.state.setAnimation(0, 'Idle', true);
-                        king.state.timeScale = 0.4
+                        king
+                            .state
+                            .setAnimation(0, 'Idle', true);
+                        king.state.timeScale = 1
                         break;
                     case 2:
-                        king.state.setAnimation(0, 'Shaking', true);
+                        king
+                            .state
+                            .setAnimation(0, 'Shaking', true);
                         king.state.timeScale = 0.1
+                        if (file == 0) {
+                            app
+                                .stage
+                                .removeChild(kingCage2_1, kingCage2_2);
+                            app
+                                .stage
+                                .addChild(kingCage);
+                        }
                         break;
                     case 3:
-
                         king.state.timeScale = 1.2
-                        app
-                            .stage
-                            .removeChild(kingCage2_1, kingCage2_2);
-                        app
-                            .stage
-                            .addChild(kingCage);
+                        if (file == 2) {
+                            app
+                                .stage
+                                .removeChild(kingCage, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                            app
+                                .stage
+                                .addChild(kingCage2_1, kingCage2_2);
+                        }
                         break;
                     case 4:
                         king.state.timeScale = 1.4
-                        RL2_2();
                         break;
                     case 5:
-
 
                         break;
                     case 6:
                         king2_1.state.timeScale = 1.6
                         king2_2.state.timeScale = 1.6
-
-                        app
-                            .stage
-                            .removeChild(kingCage, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-                        app
-                            .stage
-                            .addChild(kingCage2_1, kingCage2_2);
-                        LR2_2();
+                        if (file == 0) {
+                            app
+                                .stage
+                                .removeChild(kingCage, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                            app
+                                .stage
+                                .addChild(kingCage2_1, kingCage2_2);
+                        }
                         break;
                     case 7:
                         king2_1.state.timeScale = 2.0
                         king2_2.state.timeScale = 2.0
-                        BT4_3();
-                        BT4_4();
+                        if (file == 2) {
+                            app
+                                .stage
+                                .removeChild(kingCage2_1, kingCage2_2);
+                            app
+                                .stage
+                                .addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                        }
                         break;
                     case 8:
                         king2_1.state.timeScale = 4.2
@@ -491,8 +701,6 @@
                         app
                             .stage
                             .removeChild(kingCage2_1, kingCage2_2);
-                        TB4_3();
-                        TB4_4();
                         app
                             .stage
                             .addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
@@ -505,9 +713,37 @@
             app
                 .stage
                 .on('pointertap', function() {
+                    // 点击 +1
+                    clickCount++;
+                    scoretext.text = clickCount;
+                    console.log('点击了：', clickCount);
+                    // 显示 +1
+                    if (data < 3) {
+                        app
+                            .stage
+                            .addChild(clickScore1_1);
+                        addScoreTop1_1();
+
+                    } else if (data < 7 && data >= 3) {
+                        app
+                            .stage
+                            .addChild(clickScore2_1, clickScore2_2);
+                        addScoreTop2_1();
+                        addScoreTop2_2();
+                    } else {
+                        app
+                            .stage
+                            .addChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4);
+                        addScoreTop4_1();
+                        addScoreTop4_2();
+                        addScoreTop4_3();
+                        addScoreTop4_4();
+                    }
+
                     time = new Date().getTime();
                     speed = time - oldtime;
                     if (speed > 500) {
+
                         file = 0;
                     } else if (speed > 300) {
                         file = 1;
@@ -516,7 +752,6 @@
                     }
                     oldtime = time;
                     time = null;
-
                 })
 
         };
@@ -529,6 +764,21 @@
     html {
         margin: 0;
         padding: 0;
+    }
+    
+    #head {
+        height: 120px;
+        background-color: wheat;
+        width: 100%;
+        font-size: 22px;
+        text-align: center;
+    }
+    
+    @font-face {
+        /* font-properties */
+        font-family: myfont;
+        src: url('./font/HYZhuZiMuTouRenW.woff'), url('pictos/HYZhuZiMuTouRenW.ttf'), url('pictos/HYZhuZiMuTouRenW.eot');
+        /* IE9 */
     }
 </style>
 
