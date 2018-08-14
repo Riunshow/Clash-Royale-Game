@@ -431,21 +431,34 @@ function onAssetsLoaded(loader, res) {
         changeAnimation()
     }, "3000");
 
+    Barbarian1_1.state.timeScale = 1
+    Barbarian2_1.state.timeScale = 1
+    Barbarian2_2.state.timeScale = 1
 
     Barbarian1_1.state.setAnimation(0, 'Shaking', true, 0);
-    Barbarian1_1.state.timeScale = 1
+    Barbarian2_1.state.setAnimation(0, 'Shaking', true, 0);
+    Barbarian2_2.state.setAnimation(0, 'Shaking', true, 0);
+
+    Hog_Rider1_1.state.timeScale = 1
+    Hog_Rider2_1.state.timeScale = 1
+    Hog_Rider2_2.state.timeScale = 1
 
     Hog_Rider1_1.state.setAnimation(0, 'Shaking', true, 0);
-    Hog_Rider1_1.state.timeScale = 1
+    Hog_Rider2_1.state.setAnimation(0, 'Shaking', true, 0);
+    Hog_Rider2_2.state.setAnimation(0, 'Shaking', true, 0);
+
+    Goblin1_1.state.timeScale = 1
+    Goblin2_1.state.timeScale = 1
+    Goblin2_2.state.timeScale = 1
 
     Goblin1_1.state.setAnimation(0, 'Shaking', true, 0);
-    Goblin1_1.state.timeScale = 1
+    Goblin2_1.state.setAnimation(0, 'Shaking', true, 0);
+    Goblin2_2.state.setAnimation(0, 'Shaking', true, 0);
 
+    king1_1.state.timeScale = 1
     king1_1.state.setAnimation(0, 'Shaking', true, 0);
     // king1_1.stateData.setMix('Idle', 'Shaking', 2);
     // king1_1.stateData.setMix('Shaking', 'Idle', 2);
-    king1_1.state.timeScale = 1
-
     king2_1.state.setAnimation(0, 'Shaking', true, 0);
     king2_2.state.setAnimation(0, 'Shaking', true, 0);
 
