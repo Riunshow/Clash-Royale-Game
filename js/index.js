@@ -14,8 +14,6 @@ let file = 0;
 let data = 0;
 
 let clickCount = 0;
-//
-
 let app = new PIXI.Application(window.innerWidth, window.innerHeight);
 let tmpTime = 0;
 
@@ -45,12 +43,9 @@ app
     .stage
     .addChild(background2);
 
+// 3s 切换背景图
 function changeBgImg() {
-    if (loadprogress <= 0.75) {
-        app.stage.swapChildren(background2, background1)
-    } else {
-        window.clearInterval(timeBgImg);
-    }
+
 }
 let timeBgImg = setInterval("changeBgImg()", "3000");
 
@@ -142,68 +137,83 @@ app.stage.interactive = true;
 // load spine data
 PIXI
     .loader
-    .add('kings', './Sc-00/Sc_00.json')
+    .add('kings', './../spines/king.json')
+    .add('Hog_Rider', './../spines/Hog_Rider.json')
+    .add('Goblin', './../spines/Goblin.json')
+    .add('Barbarian', './../spines/Barbarian.json')
+    .on('progress', (loader, resource) => {
+        const { progress } = loader
+        console.log(`[${progress}%] ${resource.name}`)
+    })
     .load(onAssetsLoaded);
 
+function initCreate(name, res) {
+    switch (name) {
+        case 'king':
+            let basicKing = new PIXI.spine.Spine(res.kings.spineData);
+            basicKing
+                .skeleton
+                .setSkinByName('King');
+            basicKing
+                .skeleton
+                .setSlotsToSetupPose();
 
-function createKing(res) {
-    let basicKing = new PIXI.spine.Spine(res.kings.spineData);
-    basicKing
-        .skeleton
-        .setSkinByName('King');
-    basicKing
-        .skeleton
-        .setSlotsToSetupPose();
+            return basicKing;
+        case 'Hog_Rider':
+            let basicHog_Rider = new PIXI.spine.Spine(res.Hog_Rider.spineData);
+            basicHog_Rider
+                .skeleton
+                .setSkinByName('Hog_Rider');
+            basicHog_Rider
+                .skeleton
+                .setSlotsToSetupPose();
 
-    return basicKing;
+            return basicHog_Rider;
+        case 'Goblin':
+            let basicGoblin = new PIXI.spine.Spine(res.Goblin.spineData);
+            basicGoblin
+                .skeleton
+                .setSkinByName('Goblin');
+            basicGoblin
+                .skeleton
+                .setSlotsToSetupPose();
+
+            return basicGoblin;
+        case 'Barbarian':
+            let basicBarbarian = new PIXI.spine.Spine(res.Barbarian.spineData);
+            basicBarbarian
+                .skeleton
+                .setSkinByName('Barbarian');
+            basicBarbarian
+                .skeleton
+                .setSlotsToSetupPose();
+
+            return basicBarbarian;
+    }
 }
 
-function KingCage(king, scaleKing, positionX, positionY) {
-    // set the position
-    let kingCage = new PIXI.Container();
-    kingCage.addChild(king);
+// 
+function initCage(basic, scale, positionX, positionY) {
+    let basicCage = new PIXI.Container();
+    basicCage.addChild(basic);
 
-    let localRect = king.getLocalBounds();
-    king
+    let basiclocalRect = basic.getLocalBounds();
+
+    basic
         .position
-        .set(-localRect.x, -localRect.y);
-    kingCage
+        .set(-basiclocalRect.x, -basiclocalRect.y);
+    basicCage
         .scale
-        .set(scaleKing);
-    kingCage
+        .set(scale);
+    basicCage
         .position
-        .set((app.screen.width - kingCage.width) * positionX, (app.screen.height - kingCage.height) * positionY);
+        .set((app.screen.width - basicCage.width) * positionX, (app.screen.height - basicCage.height) * positionY);
 
-    return kingCage;
+    return basicCage;
 }
 
 
-//  app.stage.buttonMode = true;
 function onAssetsLoaded(loader, res) {
-    // king spine
-    let king1_1 = createKing(res);
-    let kingCage1_1 = KingCage(king1_1, 0.5, 0.5, 0.5);
-
-    let king2_1 = createKing(res);
-    let kingCage2_1 = KingCage(king2_1, 0.3, 0.15, 0.5);
-
-    let king2_2 = createKing(res);
-    let kingCage2_2 = KingCage(king2_2, 0.3, 0.85, 0.5);
-
-    let king4_1 = createKing(res)
-    let kingCage4_1 = KingCage(king4_1, 0.2, 0.2, 0.25);
-
-    let king4_2 = createKing(res)
-    let kingCage4_2 = KingCage(king4_2, 0.2, 0.8, 0.25);
-
-    let king4_3 = createKing(res)
-    let kingCage4_3 = KingCage(king4_3, 0.2, 0.2, 0.7);
-
-    let king4_4 = createKing(res)
-    let kingCage4_4 = KingCage(king4_4, 0.2, 0.8, 0.7);
-
-    app.stage.addChild(kingCage1_1);
-
     function addoneanimate(time) {
         requestAnimationFrame(addoneanimate);
         TWEEN.update(time);
@@ -211,7 +221,6 @@ function onAssetsLoaded(loader, res) {
     requestAnimationFrame(addoneanimate);
 
     function addone(type) {
-        console.log(type)
         switch (type) {
             case 1:
                 let clickScore1_1 = PIXI.Sprite.fromImage('./img/1.png');
@@ -294,6 +303,235 @@ function onAssetsLoaded(loader, res) {
         }
     }
 
+    // king
+    let king1_1 = initCreate('king', res);
+    let king2_1 = initCreate('king', res);
+    let king2_2 = initCreate('king', res);
+    let king4_1 = initCreate('king', res)
+    let king4_2 = initCreate('king', res)
+    let king4_3 = initCreate('king', res)
+    let king4_4 = initCreate('king', res)
+
+
+    let kingCage1_1 = initCage(king1_1, 0.5, 0.5, 0.5);
+    let kingCage2_1 = initCage(king2_1, 0.3, 0.15, 0.5);
+    let kingCage2_2 = initCage(king2_2, 0.3, 0.85, 0.5);
+    let kingCage4_1 = initCage(king4_1, 0.2, 0.2, 0.25);
+    let kingCage4_2 = initCage(king4_2, 0.2, 0.8, 0.25);
+    let kingCage4_3 = initCage(king4_3, 0.2, 0.2, 0.7);
+    let kingCage4_4 = initCage(king4_4, 0.2, 0.8, 0.7);
+
+
+    // Barbarian
+    let Barbarian1_1 = initCreate('Barbarian', res);
+    let Barbarian2_1 = initCreate('Barbarian', res);
+    let Barbarian2_2 = initCreate('Barbarian', res);
+
+    let BarbarianCage1_1 = initCage(Barbarian1_1, 0.5, 0.5, 0.5);
+    let BarbarianCage2_1 = initCage(Barbarian2_1, 0.3, 0.15, 0.5);
+    let BarbarianCage2_2 = initCage(Barbarian2_2, 0.3, 0.85, 0.5);
+
+    // Goblin
+    let Goblin1_1 = initCreate('Goblin', res);
+    let Goblin2_1 = initCreate('Goblin', res);
+    let Goblin2_2 = initCreate('Goblin', res);
+
+    let GoblinCage1_1 = initCage(Goblin1_1, 0.5, 0.5, 0.5);
+    let GoblinCage2_2 = initCage(Goblin2_2, 0.3, 0.85, 0.5);
+    let GoblinCage2_1 = initCage(Goblin2_1, 0.3, 0.15, 0.5);
+
+    // Hog_Rider
+    let Hog_Rider1_1 = initCreate('Hog_Rider', res);
+    let Hog_Rider2_1 = initCreate('Hog_Rider', res);
+    let Hog_Rider2_2 = initCreate('Hog_Rider', res);
+
+    let Hog_RiderCage1_1 = initCage(Hog_Rider1_1, 0.5, 0.5, 0.5);
+    let Hog_RiderCage2_1 = initCage(Hog_Rider2_1, 0.3, 0.85, 0.5);
+    let Hog_RiderCage2_2 = initCage(Hog_Rider2_2, 0.3, 0.15, 0.5);
+
+
+
+    let tmpIndex = 1
+    let tmpArray = [kingCage1_1, BarbarianCage1_1, GoblinCage1_1, Hog_RiderCage1_1]
+    let testTmpArray = [
+        [
+            kingCage1_1,
+            kingCage2_1,
+            kingCage2_2,
+            kingCage4_1,
+            kingCage4_2,
+            kingCage4_3,
+            kingCage4_4,
+        ],
+        [
+            BarbarianCage1_1,
+            BarbarianCage2_1,
+            BarbarianCage2_2,
+        ],
+        [
+            GoblinCage1_1,
+            GoblinCage2_2,
+            GoblinCage2_1,
+        ],
+        [
+            Hog_RiderCage1_1,
+            Hog_RiderCage2_1,
+            Hog_RiderCage2_2,
+        ]
+    ]
+    app.stage.addChild(testTmpArray[0][0]);
+
+
+    function changeAnimation() {
+        // if (loadprogress <= 0.75) {
+        if (loadprogress) {
+            app.stage.swapChildren(background2, background1)
+
+            // if (tmpIndex >= tmpArray.length) {
+            //     app.stage.removeChild(tmpArray[tmpArray.length - 1]);
+
+            //     tmpIndex = 0;
+            // } else {
+            //     app.stage.removeChild(tmpArray[tmpIndex - 1]);
+            // }
+            // app.stage.addChild(tmpArray[tmpIndex]);
+
+            console.log(`tmpIndex: ${tmpIndex}`)
+
+            if (tmpIndex >= testTmpArray.length) {
+                for (const key in testTmpArray[testTmpArray.length - 1]) {
+                    app.stage.removeChild(testTmpArray[testTmpArray.length - 1][key]);
+                }
+
+                tmpIndex = 0;
+            } else {
+                for (const key in testTmpArray[tmpIndex - 1]) {
+                    app.stage.removeChild(testTmpArray[tmpIndex - 1][key]);
+                }
+            }
+
+            if (data < 8) {
+                // app.stage.removeChild(testTmpArray[tmpIndex][1], testTmpArray[tmpIndex][2]);
+                app.stage.addChild(testTmpArray[tmpIndex][0]);
+            } else if (data >= 8 && data < 16) {
+                // app.stage.removeChild(testTmpArray[tmpIndex][0]);
+                app.stage.addChild(testTmpArray[tmpIndex][1], testTmpArray[tmpIndex][2]);
+            }
+
+
+
+            tmpIndex++;
+
+        } else {
+            window.clearInterval(changeAni);
+        }
+    }
+
+    let changeAni = setInterval(() => {
+        changeAnimation()
+    }, "3000");
+
+
+    Barbarian1_1.state.setAnimation(0, 'Shaking', true, 0);
+    Barbarian1_1.state.timeScale = 1
+
+    Hog_Rider1_1.state.setAnimation(0, 'Shaking', true, 0);
+    Hog_Rider1_1.state.timeScale = 1
+
+    Goblin1_1.state.setAnimation(0, 'Shaking', true, 0);
+    Goblin1_1.state.timeScale = 1
+
+    king1_1.state.setAnimation(0, 'Shaking', true, 0);
+    // king1_1.stateData.setMix('Idle', 'Shaking', 2);
+    // king1_1.stateData.setMix('Shaking', 'Idle', 2);
+    king1_1.state.timeScale = 1
+
+    king2_1.state.setAnimation(0, 'Shaking', true, 0);
+    king2_2.state.setAnimation(0, 'Shaking', true, 0);
+
+    king4_1.state.setAnimation(0, 'Shaking', true, 0);
+    king4_2.state.setAnimation(0, 'Shaking', true, 0);
+    king4_3.state.setAnimation(0, 'Shaking', true, 0);
+    king4_4.state.setAnimation(0, 'Shaking', true, 0);
+
+    function show() {
+        console.log(data);
+        switch (data) {
+            case 0:
+                king1_1.state.timeScale = 0.2
+                break;
+
+            case 1:
+                // if (file == 0 || file == 1) {
+                //     king1_1.state.setAnimation(0, 'Idle', true)
+                // }
+                // if (file == 2) {
+                //     king1_1.state.setAnimation(0, 'Shaking', true)
+                // }
+                king1_1.state.timeScale = 1.4
+                break;
+
+            case 2:
+                king1_1.state.timeScale = 1.6
+                break;
+            case 7:
+                if (file == 0) {
+                    // app.stage.removeChild(kingCage2_1, kingCage2_2);
+                    // app.stage.addChild(kingCage1_1)
+                    app.stage.removeChild(testTmpArray[tmpIndex - 1][1], testTmpArray[tmpIndex - 1][2]);
+                    app.stage.addChild(testTmpArray[tmpIndex - 1][0]);
+                }
+                king1_1.state.timeScale = 1.8;
+                king2_1.state.timeScale = 2.6;
+                king2_2.state.timeScale = 2.6;
+                break;
+            case 8:
+                if (file == 2) {
+                    // app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                    // app.stage.addChild(kingCage2_1, kingCage2_2)
+                    app.stage.removeChild(testTmpArray[tmpIndex - 1][0]);
+                    app.stage.addChild(testTmpArray[tmpIndex - 1][1], testTmpArray[tmpIndex - 1][2]);
+                }
+                king1_1.state.timeScale = 2.0;
+                king2_1.state.timeScale = 2.6;
+                king2_2.state.timeScale = 2.6;
+                break;
+            case 10:
+                king1_1.state.timeScale = 2.8
+                break;
+            case 15:
+                if (file == 0) {
+                    // app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
+                    // app.stage.addChild(kingCage2_1, kingCage2_2)
+                }
+                king2_1.state.timeScale = 2.6;
+                king2_2.state.timeScale = 2.6;
+                king4_1.state.timeScale = 4;
+                king4_2.state.timeScale = 4;
+                king4_3.state.timeScale = 4;
+                king4_4.state.timeScale = 4;
+                break;
+            case 16:
+                king2_1.state.timeScale = 2.8;
+                king2_2.state.timeScale = 2.8;
+                if (file == 2) {
+                    // app.stage.removeChild(kingCage2_1, kingCage2_2);
+                    // app.stage.addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4)
+                }
+                break;
+            case 18:
+                king2_1.state.timeScale = 4.2;
+                king2_2.state.timeScale = 4.2;
+                break;
+            case 20:
+                king4_1.state.timeScale = 6;
+                king4_2.state.timeScale = 6;
+                king4_3.state.timeScale = 6;
+                king4_4.state.timeScale = 6;
+                break;
+        }
+    }
+
     function updata() {
         switch (file) {
             case 0:
@@ -319,97 +557,9 @@ function onAssetsLoaded(loader, res) {
         show(); //渲染视图
         file = 0; //更新档位
     }
-
     let timer = setInterval(function() {
         updata(); //0.5更新一次状态
     }, 200)
-
-    king1_1.state.setAnimation(0, 'Idle', true, 0);
-    king1_1.stateData.setMix('Idle', 'Shaking', 2);
-    king1_1.stateData.setMix('Shaking', 'Idle', 2);
-    king1_1.state.timeScale = 1
-
-    king2_1.state.setAnimation(0, 'Shaking', true, 0);
-    king2_2.state.setAnimation(0, 'Shaking', true, 0);
-
-    king4_1.state.setAnimation(0, 'Shaking', true, 0);
-    king4_2.state.setAnimation(0, 'Shaking', true, 0);
-    king4_3.state.setAnimation(0, 'Shaking', true, 0);
-    king4_4.state.setAnimation(0, 'Shaking', true, 0);
-
-    function show() {
-        // console.log(data);
-        switch (data) {
-            case 0:
-                king1_1.state.timeScale = 1
-                break;
-
-            case 1:
-                if (file == 0 || file == 1) {
-                    king1_1.state.setAnimation(0, 'Idle', true)
-                }
-                if (file == 2) {
-                    king1_1.state.setAnimation(0, 'Shaking', true)
-                }
-                king1_1.state.timeScale = 1.4
-                break;
-
-            case 2:
-                king1_1.state.timeScale = 1.6
-                break;
-            case 7:
-                if (file == 0) {
-                    app.stage.removeChild(kingCage2_1, kingCage2_2);
-                    app.stage.addChild(kingCage1_1)
-                }
-                king1_1.state.timeScale = 1.8;
-                king2_1.state.timeScale = 2.6;
-                king2_2.state.timeScale = 2.6;
-                break;
-            case 8:
-                if (file == 2) {
-                    app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-                    app.stage.addChild(kingCage2_1, kingCage2_2)
-                }
-                king1_1.state.timeScale = 2.0;
-                king2_1.state.timeScale = 2.6;
-                king2_2.state.timeScale = 2.6;
-                break;
-            case 10:
-                king1_1.state.timeScale = 2.8
-                break;
-            case 15:
-                if (file == 0) {
-                    app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-                    app.stage.addChild(kingCage2_1, kingCage2_2)
-                }
-                king2_1.state.timeScale = 2.6;
-                king2_2.state.timeScale = 2.6;
-                king4_1.state.timeScale = 4;
-                king4_2.state.timeScale = 4;
-                king4_3.state.timeScale = 4;
-                king4_4.state.timeScale = 4;
-                break;
-            case 16:
-                king2_1.state.timeScale = 2.8;
-                king2_2.state.timeScale = 2.8;
-                if (file == 2) {
-                    app.stage.removeChild(kingCage2_1, kingCage2_2);
-                    app.stage.addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4)
-                }
-                break;
-            case 18:
-                king2_1.state.timeScale = 4.2;
-                king2_2.state.timeScale = 4.2;
-                break;
-            case 20:
-                king4_1.state.timeScale = 6;
-                king4_2.state.timeScale = 6;
-                king4_3.state.timeScale = 6;
-                king4_4.state.timeScale = 6;
-                break;
-        }
-    }
 
     app
         .stage
