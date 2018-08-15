@@ -1,0 +1,167 @@
+
+Hog_Rider.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Hog_Rider/A_Body
+  rotate: true
+  xy: 1643, 297
+  size: 206, 243
+  orig: 206, 243
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Head
+  rotate: false
+  xy: 1888, 320
+  size: 140, 183
+  orig: 140, 183
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Left_Arm
+  rotate: true
+  xy: 479, 67
+  size: 106, 193
+  orig: 106, 193
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Left_Feet
+  rotate: true
+  xy: 666, 185
+  size: 60, 110
+  orig: 60, 110
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Left_Hand
+  rotate: false
+  xy: 674, 97
+  size: 83, 86
+  orig: 83, 86
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Left_Leg
+  rotate: true
+  xy: 286, 45
+  size: 76, 114
+  orig: 76, 114
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Pant_Back
+  rotate: false
+  xy: 977, 244
+  size: 35, 91
+  orig: 35, 91
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Pant_Front
+  rotate: true
+  xy: 290, 123
+  size: 172, 187
+  orig: 172, 187
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Right_Arm
+  rotate: true
+  xy: 669, 247
+  size: 88, 181
+  orig: 88, 181
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Right_Feet
+  rotate: true
+  xy: 223, 59
+  size: 113, 61
+  orig: 113, 61
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Right_Hand
+  rotate: false
+  xy: 669, 337
+  size: 349, 166
+  orig: 349, 166
+  offset: 0, 0
+  index: -1
+Hog_Rider/A_Right_Leg
+  rotate: true
+  xy: 778, 171
+  size: 74, 72
+  orig: 74, 72
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Body
+  rotate: false
+  xy: 2, 174
+  size: 286, 329
+  orig: 286, 329
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Head
+  rotate: false
+  xy: 290, 297
+  size: 377, 206
+  orig: 377, 206
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Head_Line
+  rotate: false
+  xy: 1020, 334
+  size: 318, 169
+  orig: 318, 169
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Left_Feet_01
+  rotate: false
+  xy: 402, 53
+  size: 54, 68
+  orig: 54, 68
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Left_Feet_02
+  rotate: false
+  xy: 223, 31
+  size: 46, 26
+  orig: 46, 26
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Left_Leg_01
+  rotate: true
+  xy: 479, 175
+  size: 120, 185
+  orig: 120, 185
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Left_Leg_02
+  rotate: true
+  xy: 1340, 357
+  size: 146, 301
+  orig: 146, 301
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Right_Feet_01
+  rotate: true
+  xy: 852, 183
+  size: 47, 67
+  orig: 47, 67
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Right_Feet_02
+  rotate: false
+  xy: 2, 2
+  size: 54, 27
+  orig: 54, 27
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Right_Leg_01
+  rotate: true
+  xy: 852, 232
+  size: 103, 123
+  orig: 103, 123
+  offset: 0, 0
+  index: -1
+Hog_Rider/B_Right_Leg_02
+  rotate: true
+  xy: 2, 31
+  size: 141, 219
+  orig: 141, 219
+  offset: 0, 0
+  index: -1

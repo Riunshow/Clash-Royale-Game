@@ -1,0 +1,76 @@
+
+King.png
+size: 1024,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+King/Body
+  rotate: false
+  xy: 2, 343
+  size: 610, 630
+  orig: 610, 630
+  offset: 0, 0
+  index: -1
+King/Head
+  rotate: true
+  xy: 2, 3
+  size: 338, 401
+  orig: 338, 401
+  offset: 0, 0
+  index: -1
+King/L_Arm01_B
+  rotate: true
+  xy: 898, 829
+  size: 144, 69
+  orig: 144, 69
+  offset: 0, 0
+  index: -1
+King/L_Arm01_F
+  rotate: false
+  xy: 773, 167
+  size: 182, 209
+  orig: 182, 209
+  offset: 0, 0
+  index: -1
+King/L_Arm02
+  rotate: false
+  xy: 614, 378
+  size: 233, 261
+  orig: 233, 261
+  offset: 0, 0
+  index: -1
+King/L_Feet
+  rotate: false
+  xy: 572, 116
+  size: 199, 225
+  orig: 199, 225
+  offset: 0, 0
+  index: -1
+King/L_Hand_Back
+  rotate: false
+  xy: 572, 47
+  size: 93, 67
+  orig: 93, 67
+  offset: 0, 0
+  index: -1
+King/L_Hand_Front
+  rotate: false
+  xy: 849, 416
+  size: 158, 223
+  orig: 158, 223
+  offset: 0, 0
+  index: -1
+King/R_Arm
+  rotate: false
+  xy: 614, 641
+  size: 282, 332
+  orig: 282, 332
+  offset: 0, 0
+  index: -1
+King/R_Feet
+  rotate: true
+  xy: 405, 2
+  size: 339, 165
+  orig: 339, 165
+  offset: 0, 0
+  index: -1
