@@ -1,8 +1,3 @@
-// audio
-var sound = new Howl({
-    src: ['./../king_happy_04.wav']
-});
-
 const img_1_width = 92;
 //
 let time,
@@ -43,12 +38,66 @@ app
     .stage
     .addChild(background2);
 
-// 3s 切换背景图
-function changeBgImg() {
 
+// load spine data
+let spineloader = PIXI.loader
+    .add('kings', './../spines/king.json')
+    .add('Hog_Rider', './../spines/Hog_Rider.json')
+    .add('Goblin', './../spines/Goblin.json')
+    .add('Barbarian', './../spines/Barbarian.json')
+    .on('progress', (loader, resource) => {
+        const {
+            progress
+        } = loader;
+        console.log(`[${progress}%]${resource.name}`)
+    }).load(buttonshow);
+
+
+function buttonshow() {
+    document.getElementById('z_button').style.display = 'inline-block';
+    console.log('load scussee')
 }
-let timeBgImg = setInterval("changeBgImg()", "3000");
 
+function alphaPlay(obj, method) { //method有两个值show或hidden 
+    var n = (method == "show") ? 0 : 100;
+    var time = setInterval(function() {
+        if (method == "show") {
+            if (n < 100) {
+                n += 10;
+                if (n == 100) {
+                    obj.style.opacity = 1
+                } else {
+                    obj.style.opacity = "0." + n
+                }
+            } else {
+                clearTimeout(time);
+            }
+        } else {
+            if (n > 0) {
+                n -= 10;
+                obj.style.opacity = "0." + n;
+            } else {
+                clearTimeout(time);
+            }
+        }
+    }, 50);
+}
+
+function play() {
+    alphaPlay(document.getElementById('begin'), "hidden");
+    document.getElementById('z_button').style.display = "none"
+    setTimeout(() => {
+        document.getElementById('begin').style.zIndex = -1;
+    }, 500);
+    // onAssetsLoaded();
+    spineloader.load(onAssetsLoaded)
+}
+
+function replay() {
+    window.location.reload();
+}
+
+let time1;
 // Basic layout 
 let timebar = PIXI.Sprite.fromImage('./img/timebar.png')
 timebar.anchor.set(0.5, 0.5); //修正定位点
@@ -94,7 +143,7 @@ scoretext.x = app.screen.width * 0.29;
 scoretext.y = -(app.screen.width * loadbgWH * 0.6);
 
 let loadwiter = PIXI.Sprite.fromImage('./img/loadwiter.png')
-loadwiter.scale.set(1.3);
+loadwiter.scale.set(1);
 loadwiter.anchor.set(0, 1);
 loadwiter.zOrder = 2;
 loadwiter.position.set(app.screen.width * 0.1, -(app.screen.width * loadbgWH * 0.25));
@@ -115,7 +164,6 @@ function loadtime() {
         window.clearInterval(time1);
     }
 }
-let time1 = setInterval("loadtime()", "1000");
 
 
 load.position.set(app.screen.width * 0.15, -(app.screen.width * loadbgWH * 0.38));
@@ -134,18 +182,7 @@ loadcontainer.addChild(scoretext);
 
 app.stage.interactive = true;
 
-// load spine data
-PIXI
-    .loader
-    .add('kings', './../spines/king.json')
-    .add('Hog_Rider', './../spines/Hog_Rider.json')
-    .add('Goblin', './../spines/Goblin.json')
-    .add('Barbarian', './../spines/Barbarian.json')
-    .on('progress', (loader, resource) => {
-        const { progress } = loader
-        console.log(`[${progress}%] ${resource.name}`)
-    })
-    .load(onAssetsLoaded);
+
 
 function initCreate(name, res) {
     switch (name) {
@@ -214,6 +251,8 @@ function initCage(basic, scale, positionX, positionY) {
 
 
 function onAssetsLoaded(loader, res) {
+    time1 = setInterval("loadtime()", "1000");
+
     function addoneanimate(time) {
         requestAnimationFrame(addoneanimate);
         TWEEN.update(time);
@@ -303,7 +342,6 @@ function onAssetsLoaded(loader, res) {
         }
     }
 
-    let tmpIndex = 1
 
     let basicSpineArray = []
     let king = [],
@@ -330,25 +368,25 @@ function onAssetsLoaded(loader, res) {
         for (let j = 0; j < 7; j++) {
             switch (j) {
                 case 0:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.5, 0.5, 0.5);
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.4, 0.5, 0.45);
                     break;
                 case 1:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.3, 0.15, 0.5);
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.23, 0.15, 0.5);
                     break;
                 case 2:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.3, 0.85, 0.5)
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.23, 0.85, 0.5)
                     break;
                 case 3:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.2, 0.2, 0.25)
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.2, 0.25)
                     break;
                 case 4:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.2, 0.8, 0.25)
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.8, 0.25)
                     break;
                 case 5:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.2, 0.2, 0.7)
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.2, 0.7)
                     break;
                 case 6:
-                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.2, 0.8, 0.7)
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.8, 0.7)
                     break;
                 default:
                     break;
@@ -362,10 +400,18 @@ function onAssetsLoaded(loader, res) {
 
     app.stage.addChild(basicCageArray[0][0]);
 
+    var sound = new Howl({
+        src: ['./../sounds/King.mp3']
+    });
+
+    let tmpIndex = 1
+
+    let audioAll = ['./../sounds/King.mp3', './../sounds/Barbarian.mp3', './../sounds/Goblin.mp3', './../sounds/Hog_Rider.mp3']
 
     function changeAnimation() {
-        // if (loadprogress <= 0.75) {
-        if (loadprogress) {
+        if (countdown > 0) {
+
+            // if (loadprogress) {
             app.stage.swapChildren(background2, background1)
 
             console.log(`tmpIndex: ${tmpIndex}`)
@@ -382,6 +428,7 @@ function onAssetsLoaded(loader, res) {
                 }
             }
 
+
             if (data < 8) {
                 // app.stage.removeChild(basicCageArray[tmpIndex][1], basicCageArray[tmpIndex][2]);
                 app.stage.addChild(basicCageArray[tmpIndex][0]);
@@ -392,7 +439,10 @@ function onAssetsLoaded(loader, res) {
                 app.stage.addChild(basicCageArray[tmpIndex][3], basicCageArray[tmpIndex][4], basicCageArray[tmpIndex][5], basicCageArray[tmpIndex][6]);
             }
 
-
+            // audio change
+            sound = new Howl({
+                src: [audioAll[tmpIndex]]
+            });
 
             tmpIndex++;
 
@@ -409,64 +459,52 @@ function onAssetsLoaded(loader, res) {
         console.log(data);
         switch (data) {
             case 0:
-                // king1_1.state.timeScale = 0.2
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1
                 break;
 
             case 1:
-                // if (file == 0 || file == 1) {
-                //     king1_1.state.setAnimation(0, 'Idle', true)
-                // }
-                // if (file == 2) {
-                //     king1_1.state.setAnimation(0, 'Shaking', true)
-                // }
-                // king1_1.state.timeScale = 1.4
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.4
                 break;
 
             case 2:
-                // king1_1.state.timeScale = 1.6
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.6
                 break;
             case 7:
                 if (file == 0) {
-                    // app.stage.removeChild(kingCage2_1, kingCage2_2);
-                    // app.stage.addChild(kingCage1_1)
                     app.stage.removeChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2]);
                     app.stage.addChild(basicCageArray[tmpIndex - 1][0]);
                 }
-                // king1_1.state.timeScale = 1.8;
-                // king2_1.state.timeScale = 2.6;
-                // king2_2.state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.8;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
                 break;
             case 8:
                 if (file == 2) {
-                    // app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-                    // app.stage.addChild(kingCage2_1, kingCage2_2)
                     app.stage.removeChild(basicCageArray[tmpIndex - 1][0]);
                     app.stage.addChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2]);
                 }
-                // king1_1.state.timeScale = 2.0;
-                // king2_1.state.timeScale = 2.6;
-                // king2_2.state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 2.0;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
                 break;
             case 10:
-                // king1_1.state.timeScale = 2.8
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 2.8
                 break;
             case 15:
                 if (file == 0) {
-                    // app.stage.removeChild(kingCage1_1, kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4);
-                    // app.stage.addChild(kingCage2_1, kingCage2_2)
                     app.stage.removeChild(basicCageArray[tmpIndex - 1][0], basicCageArray[tmpIndex - 1][3], basicCageArray[tmpIndex - 1][4], basicCageArray[tmpIndex - 1][5], basicCageArray[tmpIndex - 1][6]);
                     app.stage.addChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2])
                 }
-                // king2_1.state.timeScale = 2.6;
-                // king2_2.state.timeScale = 2.6;
-                // king4_1.state.timeScale = 4;
-                // king4_2.state.timeScale = 4;
-                // king4_3.state.timeScale = 4;
-                // king4_4.state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 4;
                 break;
             case 16:
-                // king2_1.state.timeScale = 2.8;
-                // king2_2.state.timeScale = 2.8;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.8;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.8;
                 if (file == 2) {
                     // app.stage.removeChild(kingCage2_1, kingCage2_2);
                     // app.stage.addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4)
@@ -475,14 +513,14 @@ function onAssetsLoaded(loader, res) {
                 }
                 break;
             case 18:
-                // king2_1.state.timeScale = 4.2;
-                // king2_2.state.timeScale = 4.2;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 4.2;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 4.2;
                 break;
             case 20:
-                // king4_1.state.timeScale = 6;
-                // king4_2.state.timeScale = 6;
-                // king4_3.state.timeScale = 6;
-                // king4_4.state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 6;
                 break;
         }
     }
@@ -512,41 +550,99 @@ function onAssetsLoaded(loader, res) {
         show(); //渲染视图
         file = 0; //更新档位
     }
+
+    // 帧动画
+
+    let alienImages = [];
+    for (let i = 0; i <= 150; i++) {
+        if (i < 10) {
+            alienImages.push(`./../cardImg/Card_000${i}.png`)
+        } else if (i >= 10 && i < 100) {
+            alienImages.push(`./../cardImg/Card_00${i}.png`)
+        } else {
+            alienImages.push(`./../cardImg/Card_0${i}.png`)
+        }
+    }
+
+    let textureArray = [];
+
+    for (let i = 0; i <= 150; i++) {
+        let texture = PIXI.Texture.fromImage(alienImages[i]);
+        textureArray.push(texture);
+    };
+    let mc = new PIXI.extras.AnimatedSprite(textureArray);
+    mc.anchor.set(0.5, 0.5); //修正定位点
+    mc.position.set((app.screen.width - mc.width) * 0.5, (app.screen.height - mc.height) * 0.45);
+    mc.scale.set(1.5);
+    mc.animationSpeed = 0.5;
+    mc.loop = false;
+
+    mc.onComplete = () => {
+        console.log("complete");
+        // document.getElementById('end').style.display = 'block';
+        document.getElementById('score').innerText = clickCount;
+
+        document.getElementById('end').style.zIndex = 1;
+        alphaPlay(document.getElementById('end'), "show");
+    };
+
     let timer = setInterval(function() {
-        updata(); //0.5更新一次状态
+        // 倒计时结束移除
+        if (countdown == 0) {
+            console.log('--- 移除人物及倒计时 ---')
+            for (let i = 0; i < 4; i++) {
+                for (const key in basicCageArray[i]) {
+                    app.stage.removeChild(basicCageArray[i][key]);
+                }
+            }
+            app.stage.removeChild(timebar, timetext);
+
+            mc.play();
+            app.stage.addChild(mc);
+
+            window.clearInterval(timer);
+        } else {
+            updata(); //0.2更新一次状态
+        }
     }, 200)
+
+
+
+
 
     app
         .stage
         .on('pointertap', function() {
-            sound.play();
-            if (data < 8) {
-                addone(1);
-                clickCount++;
-                scoretext.text = clickCount;
-            } else if (data >= 8 && data < 16) {
-                addone(2);
-                clickCount += 2;
-                scoretext.text = clickCount;
+            if (countdown > 0) {
+                sound.play();
+                if (data < 8) {
+                    addone(1);
+                    clickCount++;
+                    scoretext.text = clickCount;
+                } else if (data >= 8 && data < 16) {
+                    addone(2);
+                    clickCount += 2;
+                    scoretext.text = clickCount;
 
-            } else {
-                addone(4);
-                clickCount += 4;
-                scoretext.text = clickCount;
+                } else {
+                    addone(4);
+                    clickCount += 4;
+                    scoretext.text = clickCount;
+                }
+
+                time = new Date().getTime();
+                speed = time - oldtime;
+                if (speed > 300) {
+
+                    file = 0;
+                } else if (speed > 200) {
+                    file = 1;
+                } else {
+                    file = 2;
+                }
+                oldtime = time;
+                time = null;
             }
-
-            time = new Date().getTime();
-            speed = time - oldtime;
-            if (speed > 300) {
-
-                file = 0;
-            } else if (speed > 200) {
-                file = 1;
-            } else {
-                file = 2;
-            }
-            oldtime = time;
-            time = null;
         })
 
 };
