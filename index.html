@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="user-scalable=0">
 
-    <title>wow</title>
+    <title>Hello World</title>
 
     <style>
         body,
@@ -56,7 +56,102 @@
             padding: 35px 52px;
             text-align: center;
             text-decoration: none;
+        }
+        
+        #begin_button {
+            display: none;
+        }
+    </style>
+    <!-- 滚动条 -->
+    <style>
+        html {
+            font-size: 62.5%;
+        }
+        
+        .bg_fff {
+            background-color: #fff;
+        }
+        
+        .xui-wrapper {
+            margin: 0 auto;
+            width: 100%;
+            max-width: 750px;
+            /*height:100vh;*/
+            background-color: #efeff4;
+        }
+        
+        .xui-process {
+            position: relative;
             display: inline-block;
+            vertical-align: middle;
+            padding: 28px 0 12px;
+            width: 76%;
+        }
+        
+        .xui-process .xui-icon-flag {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            width: 12px;
+            height: 18px;
+            background-size: 11px;
+        }
+        
+        .xui-process .xui-process-static {
+            width: 100%;
+            height: 15px;
+            border-radius: 10px;
+            -webkit-box-shadow: 0 0 5px rgba(0, 198, 255, .6);
+            box-shadow: 0 0 5px rgba(0, 198, 255, .6);
+            background-color: rgba(0, 198, 255, .6);
+        }
+        
+        .xui-process .xui-process-active {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            width: 0;
+            height: 14px;
+            border: 1px solid #4dafe2;
+            border-radius: 10px;
+            background-image: linear-gradient(60deg, transparent 0rem, transparent 0.8rem, #4dafe2 0.8rem, #4dafe2 1.6rem, transparent 1.6rem, transparent 2.4rem, #4dafe2 2.4rem);
+            background-color: #008cd5;
+            background-size: 20px 38px;
+            box-shadow: 1px 1px 5px rgba(0, 140, 213, .8);
+            box-shadow: 1px 1px 5px rgba(0, 140, 213, .8);
+            -webkit-animation: process 800ms infinite linear;
+            animation: process 800ms infinite linear;
+        }
+        
+        .xui-process .xui-process-active:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 100%;
+            border-radius: 10px;
+            background-image: linear-gradient(to bottom, rgba(0, 140, 213, .6), rgba(0, 140, 213, .6) 15%, transparent 60%, rgba(0, 140, 213, .6));
+        }
+        /* 动画 */
+        
+        @-webkit-keyframes process {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 0;
+            }
+        }
+        
+        @keyframes process {
+            0% {
+                background-position: 0 0;
+            }
+            100% {
+                background-position: 20px 0;
+            }
         }
     </style>
 </head>
@@ -68,9 +163,15 @@
             快速点击屏幕</br>为力量哥打气
         </div>
 
-        <button onclick="play()" id='z_button'>
+        <button onclick="play()" id='begin_button'>
             为力量哥打call
         </button>
+
+        <div class="xui-process">
+            <i id="icon-flag" class="xui-icon-flag"></i>
+            <div class="xui-process-static"></div>
+            <div id="process-bar" class="xui-process-active"></div>
+        </div>
     </div>
     <div id='end'>
         <div>
@@ -87,12 +188,30 @@
             </button>
         </div>
     </div>
+    <script>
+        function loadProcess(hasGet, totalGet) {
+            var flag = document.getElementById('icon-flag'),
+                processBar = document.getElementById('process-bar'),
+                widthPercentage = Math.round(hasGet / totalGet * 100);
+            if (widthPercentage >= 100) {
+                widthPercentage = 100;
+            }
+            flag.style.left = (widthPercentage - 1) + '%';
+            processBar.style.width = widthPercentage + '%';
+            if (widthPercentage == 0) {
+                processBar.style.borderStyle = 'none';
+            }
+        };
+    </script>
+
     <script src="./js/pixi.min.js"></script>
     <script src="./js/tween.min.js"></script>
     <script src="./js/pixi-spine.js"></script>
     <script src="./js/howler.min.js"></script>
+    <script src="./js/resloader.js"></script>
     <script src="./js/index.js"></script>
-
+    <script>
+    </script>
 </body>
 
 </html>

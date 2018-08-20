@@ -38,24 +38,73 @@ app
     .stage
     .addChild(background2);
 
+let clickScore1_1 = PIXI.Sprite.fromImage('./img/1.png');
+let timebar = PIXI.Sprite.fromImage('./img/timebar.png')
+let loadbg = PIXI.Sprite.fromImage('./img/loadbg.png')
+let loadwiter = PIXI.Sprite.fromImage('./img/loadwiter.png')
+let load = PIXI.Sprite.fromImage('./img/load.png')
+
+let alienImages = [];
+for (let i = 0; i <= 150; i++) {
+    if (i < 10) {
+        alienImages.push(`./cardImg/Card_000${i}.png`)
+    } else if (i >= 10 && i < 100) {
+        alienImages.push(`./cardImg/Card_00${i}.png`)
+    } else {
+        alienImages.push(`./cardImg/Card_0${i}.png`)
+    }
+}
+
+let textureArray = [];
+
+for (let i = 0; i <= 150; i++) {
+    let texture = PIXI.Texture.fromImage(alienImages[i]);
+    textureArray.push(texture);
+};
+
+let mc = new PIXI.extras.AnimatedSprite(textureArray);
+mc.anchor.set(0.5, 0.5); //修正定位点
+mc.position.set((app.screen.width - mc.width) * 0.5, (app.screen.height - mc.height) * 0.45);
+mc.scale.set(1.5);
+mc.animationSpeed = 0.5;
+mc.loop = false;
+
+let tmpProcess = 0
+let processTimer = setInterval(() => {
+    tmpProcess += 1;
+    loadProcess(tmpProcess, 100);
+    if (tmpProcess == 50) {
+        window.clearInterval(processTimer);
+    }
+}, 50)
+
 
 // load spine data
 let spineloader = PIXI.loader
-    .add('kings', './../spines/king.json')
-    .add('Hog_Rider', './../spines/Hog_Rider.json')
-    .add('Goblin', './../spines/Goblin.json')
-    .add('Barbarian', './../spines/Barbarian.json')
+    .add('kings', './spines/king.json')
+    .add('Hog_Rider', './spines/Hog_Rider.json')
+    .add('Goblin', './spines/Goblin.json')
+    .add('Barbarian', './spines/Barbarian.json')
     .on('progress', (loader, resource) => {
         const {
             progress
         } = loader;
-        console.log(`[${progress}%]${resource.name}`)
+        // console.log(`[${progress}%]${resource.name}`)
     }).load(buttonshow);
 
 
 function buttonshow() {
-    document.getElementById('z_button').style.display = 'inline-block';
-    console.log('load scussee')
+    let processTimer = setInterval(() => {
+        tmpProcess += 1;
+        loadProcess(tmpProcess, 100);
+        if (tmpProcess == 100) {
+            window.clearInterval(processTimer);
+            document.querySelector('.xui-process').style.display = 'none';
+            document.getElementById('begin_button').style.display = 'inline-block';
+            // console.log('load success')
+        }
+    }, 50)
+
 }
 
 function alphaPlay(obj, method) { //method有两个值show或hidden 
@@ -85,7 +134,7 @@ function alphaPlay(obj, method) { //method有两个值show或hidden
 
 function play() {
     alphaPlay(document.getElementById('begin'), "hidden");
-    document.getElementById('z_button').style.display = "none"
+    document.getElementById('begin_button').style.display = "none"
     setTimeout(() => {
         document.getElementById('begin').style.zIndex = -1;
     }, 500);
@@ -99,7 +148,6 @@ function replay() {
 
 let time1;
 // Basic layout 
-let timebar = PIXI.Sprite.fromImage('./img/timebar.png')
 timebar.anchor.set(0.5, 0.5); //修正定位点
 timebar.scale.set(1.5);
 timebar.position.set((app.screen.width) * 0.5, 60);
@@ -122,7 +170,6 @@ timetext.y = 95;
 app.stage.addChild(timetext)
 
 const loadbgWH = 0.25; //加载背景图长宽比 
-let loadbg = PIXI.Sprite.fromImage('./img/loadbg.png')
 loadbg.anchor.set(0, 1); //修正定位点
 loadbg.width = app.screen.width;
 loadbg.height = app.screen.width * 0.25;
@@ -142,12 +189,10 @@ scoretext.anchor.set(0.5);
 scoretext.x = app.screen.width * 0.29;
 scoretext.y = -(app.screen.width * loadbgWH * 0.6);
 
-let loadwiter = PIXI.Sprite.fromImage('./img/loadwiter.png')
 loadwiter.scale.set(1);
 loadwiter.anchor.set(0, 1);
 loadwiter.zOrder = 2;
 loadwiter.position.set(app.screen.width * 0.1, -(app.screen.width * loadbgWH * 0.25));
-let load = PIXI.Sprite.fromImage('./img/load.png')
 load.anchor.set(0, 1);
 load.width = app.screen.width * 0.1;
 let loadprogress = 0.1;
@@ -164,6 +209,7 @@ function loadtime() {
         window.clearInterval(time1);
     }
 }
+
 
 
 load.position.set(app.screen.width * 0.15, -(app.screen.width * loadbgWH * 0.38));
@@ -401,12 +447,12 @@ function onAssetsLoaded(loader, res) {
     app.stage.addChild(basicCageArray[0][0]);
 
     var sound = new Howl({
-        src: ['./../sounds/King.mp3']
+        src: ['./sounds/King.mp3']
     });
 
     let tmpIndex = 1
 
-    let audioAll = ['./../sounds/King.mp3', './../sounds/Barbarian.mp3', './../sounds/Goblin.mp3', './../sounds/Hog_Rider.mp3']
+    let audioAll = ['./sounds/King.mp3', './sounds/Barbarian.mp3', './sounds/Goblin.mp3', './sounds/Hog_Rider.mp3']
 
     function changeAnimation() {
         if (countdown > 0) {
@@ -414,7 +460,7 @@ function onAssetsLoaded(loader, res) {
             // if (loadprogress) {
             app.stage.swapChildren(background2, background1)
 
-            console.log(`tmpIndex: ${tmpIndex}`)
+            // console.log(`tmpIndex: ${tmpIndex}`)
 
             if (tmpIndex >= basicCageArray.length) {
                 for (const key in basicCageArray[basicCageArray.length - 1]) {
@@ -456,7 +502,7 @@ function onAssetsLoaded(loader, res) {
     }, "3000");
 
     function show() {
-        console.log(data);
+        // console.log(data);
         switch (data) {
             case 0:
                 basicSpineArray[tmpIndex - 1][0].state.timeScale = 1
@@ -553,43 +599,20 @@ function onAssetsLoaded(loader, res) {
 
     // 帧动画
 
-    let alienImages = [];
-    for (let i = 0; i <= 150; i++) {
-        if (i < 10) {
-            alienImages.push(`./../cardImg/Card_000${i}.png`)
-        } else if (i >= 10 && i < 100) {
-            alienImages.push(`./../cardImg/Card_00${i}.png`)
-        } else {
-            alienImages.push(`./../cardImg/Card_0${i}.png`)
-        }
-    }
 
-    let textureArray = [];
-
-    for (let i = 0; i <= 150; i++) {
-        let texture = PIXI.Texture.fromImage(alienImages[i]);
-        textureArray.push(texture);
-    };
-    let mc = new PIXI.extras.AnimatedSprite(textureArray);
-    mc.anchor.set(0.5, 0.5); //修正定位点
-    mc.position.set((app.screen.width - mc.width) * 0.5, (app.screen.height - mc.height) * 0.45);
-    mc.scale.set(1.5);
-    mc.animationSpeed = 0.5;
-    mc.loop = false;
 
     mc.onComplete = () => {
-        console.log("complete");
-        // document.getElementById('end').style.display = 'block';
+        // console.log("complete");
         document.getElementById('score').innerText = clickCount;
-
         document.getElementById('end').style.zIndex = 1;
+        document.getElementById('z_button').style.display = 'inline-block';
         alphaPlay(document.getElementById('end'), "show");
     };
 
     let timer = setInterval(function() {
         // 倒计时结束移除
         if (countdown == 0) {
-            console.log('--- 移除人物及倒计时 ---')
+            // console.log('--- 移除人物及倒计时 ---')
             for (let i = 0; i < 4; i++) {
                 for (const key in basicCageArray[i]) {
                     app.stage.removeChild(basicCageArray[i][key]);
