@@ -1,18 +1,18 @@
-import './css/index.scss'
+import '../../css/index.scss'
 
 const PIXI = require('pixi.js')
 const TWEEN = require('@tweenjs/tween.js');
 const pixi_spine = require('pixi-spine')
 const howler = require('howler')
 
-const { spinesData, spinesImg } = require('./../assets/spines')
-const { soundsData } = require('./../assets/sounds')
-const { cardImg } = require('./../assets/cardImg')
-const { baseImg } = require('./../assets/img')
+import { spinesData, spinesImg } from '../../../assets/spines'
+import { soundsData } from '../../../assets/sounds'
+import { cardImg } from '../../../assets/cardImg'
+import { baseImg } from '../../../assets/img'
 
 // 进度条
 function loadProcess(hasGet, totalGet) {
-    const flag = document.getElementById('icon-flag'),
+    let flag = document.getElementById('icon-flag'),
         processBar = document.getElementById('process-bar'),
         widthPercentage = Math.round(hasGet / totalGet * 100);
     if (widthPercentage >= 100) {
@@ -26,7 +26,8 @@ function loadProcess(hasGet, totalGet) {
 };
 
 // loading data
-PIXI.loader
+export const pixiLoader =
+    PIXI.loader
     .add(soundsData)
     .add(cardImg)
     .add(baseImg)

@@ -5,7 +5,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
-    entry: './src/loader.js',
+    entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, './dist/'),
         publicPath: './',
