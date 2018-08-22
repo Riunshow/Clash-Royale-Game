@@ -1,7 +1,7 @@
 import { pixiLoader } from './js/load'
 
 import { PlayGround } from './js/backGround'
-import { PersonAnimation } from './js/personAnimation'
+import personAnimation from './js/personAnimation'
 
 const app = new PIXI.Application(window.innerWidth, window.innerHeight);
 app.stage.interactive = true;
@@ -60,7 +60,7 @@ const play = (loader, res) => {
     BG.initWaterProcess();
     BG.changeWateProcess();
     BG.changeBackground()
-
-    const PA = new PersonAnimation(app, res)
+        // personAnimation()
+        // const PA = new PersonAnimation(app, res)
 
 }

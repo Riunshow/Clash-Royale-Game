@@ -1,193 +1,401 @@
 import 'pixi.js'
 import 'pixi-spine'
+import TWEEN from '@tweenjs/tween.js'
 
 import { spinesData } from '../../../assets/spines'
 
-export class PersonAnimation {
-    constructor(app, res) {
-        this.app = app
-        this.res = res
-            // 人物数量
-        this.counts = [
-            { row: 1, column: 1 },
-            { row: 2, column: 1 },
-            { row: 2, column: 2 },
-        ]
+export const personAnimation = () => {
 
-        this.names = ['King', 'Barbarian', 'Goblin', 'Hog_Rider']
-        this.nameIndex = 0
+    function initCreate(name, res) {
+        switch (name) {
+            case 'king':
+                let basicKing = new PIXI.spine.Spine(res.kings.spineData);
+                basicKing.skeleton.setSkinByName('King');
+                basicKing.skeleton.setSlotsToSetupPose();
 
-        this.animationInfo = {
-            speed: 1,
-            name: this.names[0],
-            row: this.counts[0].row,
-            column: this.counts[0].column,
+                return basicKing;
+            case 'Hog_Rider':
+                let basicHog_Rider = new PIXI.spine.Spine(res.Hog_Rider.spineData);
+                basicHog_Rider.skeleton.setSkinByName('Hog_Rider');
+                basicHog_Rider.skeleton.setSlotsToSetupPose();
+
+                return basicHog_Rider;
+            case 'Goblin':
+                let basicGoblin = new PIXI.spine.Spine(res.Goblin.spineData);
+                basicGoblin.skeleton.setSkinByName('Goblin');
+                basicGoblin.skeleton.setSlotsToSetupPose();
+
+                return basicGoblin;
+            case 'Barbarian':
+                let basicBarbarian = new PIXI.spine.Spine(res.Barbarian.spineData);
+                basicBarbarian.skeleton.setSkinByName('Barbarian');
+                basicBarbarian.skeleton.setSlotsToSetupPose();
+
+                return basicBarbarian;
+        }
+    }
+
+    function initCage(basic, scale, positionX, positionY) {
+        let basicCage = new PIXI.Container();
+        basicCage.addChild(basic);
+
+        let basiclocalRect = basic.getLocalBounds();
+
+        basic.position.set(-basiclocalRect.x, -basiclocalRect.y);
+        basicCage.scale.set(scale);
+        basicCage.position.set((app.screen.width - basicCage.width) * positionX, (app.screen.height - basicCage.height) * positionY);
+
+        return basicCage;
+    }
+
+    function addoneanimate(time) {
+        requestAnimationFrame(addoneanimate);
+        TWEEN.update(time);
+    }
+    requestAnimationFrame(addoneanimate);
+
+    function addone(type) {
+        switch (type) {
+            case 1:
+                let clickScore1_1 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore1_1.position.set((app.screen.width - img_1_width) * 0.5, (app.screen.height - basicCageArray[0][0].height) * 0.45 - 20);
+                app.stage.addChild(clickScore1_1);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore1_1.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore1_1)
+                    }); // Start the tween immediately.
+                break;
+            case 2:
+                let clickScore2_1 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore2_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][1].height) * 0.5 - 30);
+                let clickScore2_2 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore2_2.position.set((app.screen.width - img_1_width) * 0.75, (app.screen.height - basicCageArray[0][2].height) * 0.5 - 30);
+                app.stage.addChild(clickScore2_1, clickScore2_2);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore2_1.y -= 5;
+                        clickScore2_2.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore2_2, clickScore2_1)
+                    }); // Start the tween immediately.
+                break;
+            case 4:
+                let clickScore4_1 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore4_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][3].height) * 0.65 - 10);
+                let clickScore4_2 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore4_2.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][4].height) * 0.65 - 10);
+                let clickScore4_3 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore4_3.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][5].height) * 0.20 - 10);
+                let clickScore4_4 = PIXI.Sprite.fromImage('./img/1.png');
+                clickScore4_4.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][6].height) * 0.20 - 10);
+                app.stage.addChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore4_1.y -= 5;
+                        clickScore4_2.y -= 5;
+                        clickScore4_3.y -= 5;
+                        clickScore4_4.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4)
+                    }); // Start the tween immediately.
+                break;
+        }
+    }
+    let basicSpineArray = []
+    let king = [],
+        Barbarian = [],
+        Goblin = [],
+        Hog_Rider = [];
+    for (let i = 0; i < 7; i++) {
+        king.push(initCreate('king', res));
+        Barbarian.push(initCreate('Barbarian', res));
+        Goblin.push(initCreate('Goblin', res));
+        Hog_Rider.push(initCreate('Hog_Rider', res));
+    }
+
+    basicSpineArray = [king, Barbarian, Goblin, Hog_Rider];
+
+    let basicCageArray = [
+        [],
+        [],
+        [],
+        []
+    ];
+
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 7; j++) {
+            switch (j) {
+                case 0:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.4, 0.5, 0.45);
+                    break;
+                case 1:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.23, 0.15, 0.5);
+                    break;
+                case 2:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.23, 0.85, 0.5)
+                    break;
+                case 3:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.2, 0.25)
+                    break;
+                case 4:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.8, 0.25)
+                    break;
+                case 5:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.2, 0.7)
+                    break;
+                case 6:
+                    basicCageArray[i][j] = initCage(basicSpineArray[i][j], 0.18, 0.8, 0.7)
+                    break;
+                default:
+                    break;
+            }
+            basicSpineArray[i][j].state.timeScale = 1;
+            basicSpineArray[i][j].state.setAnimation(0, 'Shaking', true, 0);
         }
 
-        // 时间记录
-        this.startTime = this.getCurrentTime()
-        this.latestClickTime = this.getCurrentTime()
+    }
 
-        // 循环事件
-        this.ticker = new PIXI.ticker.Ticker()
-        this.ticker.stop()
-        this.ticker.add(() => {
-            this.changeSpeed()
-            this.changePersonName()
-                // this._initPersonBasic()
-        })
-        this.showPlay()
 
-        this.ticker.start()
+    app.stage.addChild(basicCageArray[0][0]);
 
-        // 销毁循环
-        let countTimer = 15
-        const timer = setInterval(() => {
-            countTimer--;
-            if (countTimer == 0) {
-                this.ticker.destroy();
-                window.clearInterval(timer);
+    var sound = new Howl({
+        src: ['./sounds/King.mp3']
+    });
+
+    let tmpIndex = 1
+
+    let audioAll = ['./sounds/King.mp3', './sounds/Barbarian.mp3', './sounds/Goblin.mp3', './sounds/Hog_Rider.mp3']
+
+    function changeAnimation() {
+        if (countdown > 0) {
+
+            // if (loadprogress) {
+            app.stage.swapChildren(background2, background1)
+
+            // console.log(`tmpIndex: ${tmpIndex}`)
+
+            if (tmpIndex >= basicCageArray.length) {
+                for (const key in basicCageArray[basicCageArray.length - 1]) {
+                    app.stage.removeChild(basicCageArray[basicCageArray.length - 1][key]);
+                }
+
+                tmpIndex = 0;
+            } else {
+                for (const key in basicCageArray[tmpIndex - 1]) {
+                    app.stage.removeChild(basicCageArray[tmpIndex - 1][key]);
+                }
             }
-        }, 1000)
 
 
-        // 点击事件
-        this.app.stage.on('tap', () => {
-            if (countTimer > 0) {
-                this.latestClickTime = this.getCurrentTime()
+            if (data < 8) {
+                // app.stage.removeChild(basicCageArray[tmpIndex][1], basicCageArray[tmpIndex][2]);
+                app.stage.addChild(basicCageArray[tmpIndex][0]);
+            } else if (data >= 8 && data < 16) {
+                // app.stage.removeChild(basicCageArray[tmpIndex][0]);
+                app.stage.addChild(basicCageArray[tmpIndex][1], basicCageArray[tmpIndex][2]);
+            } else {
+                app.stage.addChild(basicCageArray[tmpIndex][3], basicCageArray[tmpIndex][4], basicCageArray[tmpIndex][5], basicCageArray[tmpIndex][6]);
             }
-        })
-    }
 
-    // 获取当前时间
-    getCurrentTime() {
-        return new Date().getTime()
-    }
+            // audio change
+            sound = new Howl({
+                src: [audioAll[tmpIndex]]
+            });
 
-    // 根据人物数量设置坐标
-    _initPersonBasic() {
-        const { row, column } = this.animationInfo
+            tmpIndex++;
 
-        const paddingX = 50
-        const paddingY = 100
-        const unitWidth = (this.app.screen.width - 2 * paddingX) / row
-        const unitHeight = (this.app.screen.height - 2 * paddingY) / column
-
-        const position = []
-        for (let i = 0; i < row; i++) {
-            for (let j = 0; j < column; j++) {
-                position.push({
-                    x: paddingX + unitWidth * (0.5 + i),
-                    y: paddingY + unitHeight * (0.5 + j),
-                    width: unitWidth,
-                    height: unitHeight,
-                })
-            }
-        }
-
-        console.log('position: ', position)
-        return position
-    }
-
-    // 根据数据生成 spine
-    generateSpine(name) {
-        const spine = new PIXI.spine.Spine(this.res[name].spineData)
-        spine.skeleton.setSkinByName(name)
-        return spine
-    }
-
-    // 初始化人物
-    initPerson(width, height) {
-        const animationName = 'Shaking'
-
-        // 生成 spine
-        const spine = this.generateSpine(this.animationInfo.name)
-
-
-        // 设置动画
-        spine.state.setAnimation(0, animationName, true)
-        spine.skeleton.setSlotsToSetupPose();
-
-        // position
-        const scale = Math.min(width / spine.width, height / spine.height)
-        const localRect = spine.getLocalBounds()
-        spine.position.set(-localRect.x, -localRect.y)
-        spine.scale.set(scale)
-
-        spine.state.timeScale = this.animationInfo.speed || 1
-
-        return spine
-    }
-
-    // 初始化容器
-    initContainer(x, y, height, width) {
-        const container = new PIXI.Container();
-        container.x = x
-        container.y = y
-        container.height = height
-        container.width = width
-
-
-        const spine = this.initPerson(width, height);
-        container.addChild(spine);
-
-        return container;
-    }
-
-    // 展示
-    showPlay() {
-        const position = this._initPersonBasic()
-        position.map((d) => {
-            this.app.stage.addChild(this.initContainer(d.x, d.y, d.height, d.width))
-        })
-    }
-
-    // 初始化 +1
-    initPlus1() {
-
-    }
-
-    // 设置速度
-    changeSpeed() {
-        const currentTime = this.getCurrentTime();
-        const isQuick = currentTime - this.latestClickTime < 200
-
-        const addSpeed = 1 / 20
-        const subSpeed = 1 / 10
-
-        const max = 15
-        const min = 1
-
-        let { speed } = this.animationInfo
-
-        // 根据速度判断当前是几个人
-        if (speed > 8) {
-            this.animationInfo.row = this.counts[2].row;
-            this.animationInfo.column = this.counts[2].column;
-        } else if (speed > 4) {
-            this.animationInfo.row = this.counts[1].row;
-            this.animationInfo.column = this.counts[1].column;
         } else {
-            this.animationInfo.row = this.counts[0].row;
-            this.animationInfo.column = this.counts[0].column;
+            window.clearInterval(changeAni);
+        }
+    }
+
+    let changeAni = setInterval(() => {
+        changeAnimation()
+    }, "3000");
+
+    function show() {
+        // console.log(data);
+        switch (data) {
+            case 0:
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1
+                break;
+
+            case 1:
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.4
+                break;
+
+            case 2:
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.6
+                break;
+            case 7:
+                if (file == 0) {
+                    app.stage.removeChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2]);
+                    app.stage.addChild(basicCageArray[tmpIndex - 1][0]);
+                }
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 1.8;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
+                break;
+            case 8:
+                if (file == 2) {
+                    app.stage.removeChild(basicCageArray[tmpIndex - 1][0]);
+                    app.stage.addChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2]);
+                }
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 2.0;
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
+                break;
+            case 10:
+                basicSpineArray[tmpIndex - 1][0].state.timeScale = 2.8
+                break;
+            case 15:
+                if (file == 0) {
+                    app.stage.removeChild(basicCageArray[tmpIndex - 1][0], basicCageArray[tmpIndex - 1][3], basicCageArray[tmpIndex - 1][4], basicCageArray[tmpIndex - 1][5], basicCageArray[tmpIndex - 1][6]);
+                    app.stage.addChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2])
+                }
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 4;
+                break;
+            case 16:
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.8;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.8;
+                if (file == 2) {
+                    // app.stage.removeChild(kingCage2_1, kingCage2_2);
+                    // app.stage.addChild(kingCage4_1, kingCage4_2, kingCage4_3, kingCage4_4)
+                    app.stage.removeChild(basicCageArray[tmpIndex - 1][1], basicCageArray[tmpIndex - 1][2]);
+                    app.stage.addChild(basicCageArray[tmpIndex - 1][3], basicCageArray[tmpIndex - 1][4], basicCageArray[tmpIndex - 1][5], basicCageArray[tmpIndex - 1][6])
+                }
+                break;
+            case 18:
+                basicSpineArray[tmpIndex - 1][1].state.timeScale = 4.2;
+                basicSpineArray[tmpIndex - 1][2].state.timeScale = 4.2;
+                break;
+            case 20:
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 6;
+                break;
+        }
+    }
+
+    function updata() {
+        switch (file) {
+            case 0:
+                data -= 1;
+                break;
+            case 1:
+                data -= 0;
+                break;
+            case 2:
+                data += 1;
+                break;
+            case 3:
+                data += 2;
+                break;
         }
 
-        // 判断加速还是减速
-        if (isQuick) {
-            speed < max ? this.animationInfo.speed += addSpeed : this.animationInfo.speed = max
+        if (data <= 0) {
+            data = 0;
+        }
+        if (data >= 20) {
+            data = 20;
+        }
+        show(); //渲染视图
+        file = 0; //更新档位
+    }
+
+    let timer = setInterval(function() {
+        // 倒计时结束移除
+        if (countdown == 0) {
+            // console.log('--- 移除人物及倒计时 ---')
+            for (let i = 0; i < 4; i++) {
+                for (const key in basicCageArray[i]) {
+                    app.stage.removeChild(basicCageArray[i][key]);
+                }
+            }
+            app.stage.removeChild(timebar, timetext);
+
+            mc.play();
+            app.stage.addChild(mc);
+
+            window.clearInterval(timer);
         } else {
-            speed > min ? this.animationInfo.speed -= subSpeed : this.animationInfo.speed = min
+            updata(); //0.2更新一次状态
         }
-    }
+    }, 200)
 
-    // 3s 切换人物名字
-    changePersonName() {
-        const currentTime = this.getCurrentTime()
-        const timer = currentTime - this.startTime
-        if (timer > 2950) {
-            this.nameIndex = this.nameIndex < this.names.length - 1 ? this.nameIndex + 1 : 0
-            this.animationInfo.name = this.names[this.nameIndex]
-            this.startTime = currentTime
-        }
-    }
+
+    app
+        .stage
+        .on('pointertap', function() {
+            if (countdown > 0) {
+                sound.play();
+                if (data < 8) {
+                    addone(1);
+                    clickCount++;
+                    scoretext.text = clickCount;
+                } else if (data >= 8 && data < 16) {
+                    addone(2);
+                    clickCount += 2;
+                    scoretext.text = clickCount;
+
+                } else {
+                    addone(4);
+                    clickCount += 4;
+                    scoretext.text = clickCount;
+                }
+
+                time = new Date().getTime();
+                speed = time - oldtime;
+                if (speed > 300) {
+                    file = 0;
+                } else if (speed > 200) {
+                    file = 1;
+                } else {
+                    file = 2;
+                }
+                oldtime = time;
+                time = null;
+            }
+        })
 }
