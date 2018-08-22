@@ -1,9 +1,16 @@
 import { pixiLoader } from './js/load'
 
 import { PlayGround } from './js/backGround'
+import { PersonAnimation } from './js/personAnimation'
 
 const app = new PIXI.Application(window.innerWidth, window.innerHeight);
 app.stage.interactive = true;
+
+// const width = document.documentElement.clientWidth
+// const height = document.documentElement.clientHeight
+
+// app.renderer.autoResize = true
+// app.renderer.resize(width, height)
 
 // 渐入渐出
 function alphaPlay(obj, method) { //method有两个值show或hidden 
@@ -46,11 +53,14 @@ document.getElementById('replay').addEventListener('click', () => {
     window.location.reload();
 })
 
-const play = () => {
+const play = (loader, res) => {
     const BG = new PlayGround(app)
     BG.initGround();
     BG.initTimeBorder();
     BG.initWaterProcess();
-    BG.process();
+    BG.changeWateProcess();
     BG.changeBackground()
+
+    const PA = new PersonAnimation(app, res)
+
 }

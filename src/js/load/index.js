@@ -1,9 +1,12 @@
 import '../../css/index.scss'
 
-const PIXI = require('pixi.js')
-const TWEEN = require('@tweenjs/tween.js');
-const pixi_spine = require('pixi-spine')
-const howler = require('howler')
+// const PIXI = require('pixi.js')
+// const TWEEN = require('@tweenjs/tween.js');
+// const pixi_spine = require('pixi-spine')
+// const howler = require('howler')
+
+import 'pixi.js'
+import 'pixi-spine'
 
 import { spinesData, spinesImg } from '../../../assets/spines'
 import { soundsData } from '../../../assets/sounds'

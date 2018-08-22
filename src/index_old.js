@@ -282,15 +282,9 @@ function initCage(basic, scale, positionX, positionY) {
 
     let basiclocalRect = basic.getLocalBounds();
 
-    basic
-        .position
-        .set(-basiclocalRect.x, -basiclocalRect.y);
-    basicCage
-        .scale
-        .set(scale);
-    basicCage
-        .position
-        .set((app.screen.width - basicCage.width) * positionX, (app.screen.height - basicCage.height) * positionY);
+    basic.position.set(-basiclocalRect.x, -basiclocalRect.y);
+    basicCage.scale.set(scale);
+    basicCage.position.set((app.screen.width - basicCage.width) * positionX, (app.screen.height - basicCage.height) * positionY);
 
     return basicCage;
 }
@@ -656,7 +650,6 @@ function onAssetsLoaded(loader, res) {
                 time = new Date().getTime();
                 speed = time - oldtime;
                 if (speed > 300) {
-
                     file = 0;
                 } else if (speed > 200) {
                     file = 1;
