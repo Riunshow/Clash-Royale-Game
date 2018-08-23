@@ -1,21 +1,20 @@
 import 'pixi.js'
 
-import { baseImg } from '../../../assets/img'
-
 export class PlayGround {
-    constructor(app) {
+    constructor(app, res) {
         this.app = app;
+        this.res = res
         this.appScreenWidth = this.app.screen.width;
 
         document.body.appendChild(this.app.view);
         // bg img
-        this.background1 = PIXI.Sprite.fromImage(baseImg[1].url);
-        this.background2 = PIXI.Sprite.fromImage(baseImg[2].url);
+        this.background1 = PIXI.Sprite.fromImage(res['./bg1.jpg'].url);
+        this.background2 = PIXI.Sprite.fromImage(res['./bg2.jpg'].url);
 
-        this.timebar = PIXI.Sprite.fromImage(baseImg[6].url)
-        this.loadbg = PIXI.Sprite.fromImage(baseImg[4].url)
-        this.loadwiter = PIXI.Sprite.fromImage(baseImg[5].url)
-        this.load = PIXI.Sprite.fromImage(baseImg[3].url)
+        this.timebar = PIXI.Sprite.fromImage(res['./timebar.png'].url)
+        this.loadbg = PIXI.Sprite.fromImage(res['./loadbg.png'].url)
+        this.loadwiter = PIXI.Sprite.fromImage(res['./loadwiter.png'].url)
+        this.load = PIXI.Sprite.fromImage(res['./load.png'].url)
 
         // 计时器
         this.timetext = new PIXI.Text('0:15', {
@@ -43,6 +42,7 @@ export class PlayGround {
 
         this.loadprogress = 0.1;
         this.countdown = 15;
+
     }
 
     // 初始化背景图
@@ -67,6 +67,11 @@ export class PlayGround {
         this.timetext.y = 95;
 
         this.app.stage.addChild(this.timebar, this.timetext)
+    }
+
+    // 移除计时器
+    removeTimeBorder() {
+        this.app.stage.removeChild(this.timebar, this.timetext)
     }
 
     // 初始化圣水及进度条
@@ -121,17 +126,16 @@ export class PlayGround {
 
     // 3s 切换背景图
     changeBackground() {
-        const timer = setInterval(() => {
-            if (this.countdown != 0) {
-                this.app.stage.swapChildren(this.background2, this.background1)
-            } else {
-                window.clearInterval(timer);
-            }
-        }, 3000)
+        this.app.stage.swapChildren(this.background2, this.background1)
     }
 
     // 暴露倒计时时间
     exportTimeLeft() {
         return this.countdown
+    }
+
+    // 获取点击数值
+    getClickCount(clickCount) {
+        this.scoretext.text = clickCount
     }
 }

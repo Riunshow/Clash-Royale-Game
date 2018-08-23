@@ -1,7 +1,7 @@
 import { pixiLoader } from './js/load'
 
 import { PlayGround } from './js/backGround'
-import personAnimation from './js/personAnimation'
+import { personAnimation } from './js/personAnimation'
 
 const app = new PIXI.Application(window.innerWidth, window.innerHeight);
 app.stage.interactive = true;
@@ -54,13 +54,9 @@ document.getElementById('replay').addEventListener('click', () => {
 })
 
 const play = (loader, res) => {
-    const BG = new PlayGround(app)
-    BG.initGround();
-    BG.initTimeBorder();
-    BG.initWaterProcess();
-    BG.changeWateProcess();
-    BG.changeBackground()
-        // personAnimation()
-        // const PA = new PersonAnimation(app, res)
+
+    personAnimation(app, res, alphaPlay)
+
+    // const PA = new PersonAnimation(app, res)
 
 }

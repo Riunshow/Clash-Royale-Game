@@ -19,23 +19,3 @@ export const spinesData = [{
     atlas: require('./Hog_Rider.atlas'),
     png: require('./Hog_Rider.png')
 }]
-
-export const spinesImg = [{
-    name: 'King',
-    atlas: require('./king.atlas'),
-    png: require('./king.png')
-}, {
-    name: 'Barbarian',
-    atlas: require('./Barbarian.atlas'),
-    png: require('./Barbarian.png')
-
-}, {
-    name: 'Goblin',
-    atlas: require('./Goblin.atlas'),
-    png: require('./Goblin.png')
-
-}, {
-    name: 'Hog_Rider',
-    atlas: require('./Hog_Rider.atlas'),
-    png: require('./Hog_Rider.png')
-}]

@@ -1,35 +1,59 @@
 import 'pixi.js'
 import 'pixi-spine'
 import TWEEN from '@tweenjs/tween.js'
+import { Howl } from 'howler';
 
-import { spinesData } from '../../../assets/spines'
+import { PlayGround } from './../backGround'
 
-export const personAnimation = () => {
+export const personAnimation = (app, res, alphaPlay) => {
+    const BG = new PlayGround(app, res)
+    BG.initGround();
+    BG.initTimeBorder();
+    BG.initWaterProcess();
+    BG.changeWateProcess();
 
+    // console.log(res)
+    // init
     function initCreate(name, res) {
         switch (name) {
             case 'king':
-                let basicKing = new PIXI.spine.Spine(res.kings.spineData);
-                basicKing.skeleton.setSkinByName('King');
-                basicKing.skeleton.setSlotsToSetupPose();
+                let basicKing = new PIXI.spine.Spine(res.King.spineData);
+                basicKing
+                    .skeleton
+                    .setSkinByName('King');
+                basicKing
+                    .skeleton
+                    .setSlotsToSetupPose();
 
                 return basicKing;
             case 'Hog_Rider':
                 let basicHog_Rider = new PIXI.spine.Spine(res.Hog_Rider.spineData);
-                basicHog_Rider.skeleton.setSkinByName('Hog_Rider');
-                basicHog_Rider.skeleton.setSlotsToSetupPose();
+                basicHog_Rider
+                    .skeleton
+                    .setSkinByName('Hog_Rider');
+                basicHog_Rider
+                    .skeleton
+                    .setSlotsToSetupPose();
 
                 return basicHog_Rider;
             case 'Goblin':
                 let basicGoblin = new PIXI.spine.Spine(res.Goblin.spineData);
-                basicGoblin.skeleton.setSkinByName('Goblin');
-                basicGoblin.skeleton.setSlotsToSetupPose();
+                basicGoblin
+                    .skeleton
+                    .setSkinByName('Goblin');
+                basicGoblin
+                    .skeleton
+                    .setSlotsToSetupPose();
 
                 return basicGoblin;
             case 'Barbarian':
                 let basicBarbarian = new PIXI.spine.Spine(res.Barbarian.spineData);
-                basicBarbarian.skeleton.setSkinByName('Barbarian');
-                basicBarbarian.skeleton.setSlotsToSetupPose();
+                basicBarbarian
+                    .skeleton
+                    .setSkinByName('Barbarian');
+                basicBarbarian
+                    .skeleton
+                    .setSlotsToSetupPose();
 
                 return basicBarbarian;
         }
@@ -48,94 +72,7 @@ export const personAnimation = () => {
         return basicCage;
     }
 
-    function addoneanimate(time) {
-        requestAnimationFrame(addoneanimate);
-        TWEEN.update(time);
-    }
-    requestAnimationFrame(addoneanimate);
 
-    function addone(type) {
-        switch (type) {
-            case 1:
-                let clickScore1_1 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore1_1.position.set((app.screen.width - img_1_width) * 0.5, (app.screen.height - basicCageArray[0][0].height) * 0.45 - 20);
-                app.stage.addChild(clickScore1_1);
-                var coords = {
-                    x: 0,
-                    y: 0
-                }; // Start at (0, 0)
-                var twwen = new TWEEN.Tween(coords)
-                    .to({
-                        x: 0,
-                        y: 8
-                    }, 300)
-                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
-                    .onUpdate(function() { // Called after tween.js updates 'coords'.
-                        clickScore1_1.y -= 5;
-                    })
-                    .start()
-                    .onComplete(function() {
-                        app.stage.removeChild(clickScore1_1)
-                    }); // Start the tween immediately.
-                break;
-            case 2:
-                let clickScore2_1 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore2_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][1].height) * 0.5 - 30);
-                let clickScore2_2 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore2_2.position.set((app.screen.width - img_1_width) * 0.75, (app.screen.height - basicCageArray[0][2].height) * 0.5 - 30);
-                app.stage.addChild(clickScore2_1, clickScore2_2);
-                var coords = {
-                    x: 0,
-                    y: 0
-                }; // Start at (0, 0)
-                var twwen = new TWEEN.Tween(coords)
-                    .to({
-                        x: 0,
-                        y: 8
-                    }, 300)
-                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
-                    .onUpdate(function() { // Called after tween.js updates 'coords'.
-                        clickScore2_1.y -= 5;
-                        clickScore2_2.y -= 5;
-                    })
-                    .start()
-                    .onComplete(function() {
-                        app.stage.removeChild(clickScore2_2, clickScore2_1)
-                    }); // Start the tween immediately.
-                break;
-            case 4:
-                let clickScore4_1 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore4_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][3].height) * 0.65 - 10);
-                let clickScore4_2 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore4_2.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][4].height) * 0.65 - 10);
-                let clickScore4_3 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore4_3.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][5].height) * 0.20 - 10);
-                let clickScore4_4 = PIXI.Sprite.fromImage('./img/1.png');
-                clickScore4_4.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][6].height) * 0.20 - 10);
-                app.stage.addChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4);
-                var coords = {
-                    x: 0,
-                    y: 0
-                }; // Start at (0, 0)
-                var twwen = new TWEEN.Tween(coords)
-                    .to({
-                        x: 0,
-                        y: 8
-                    }, 300)
-                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
-                    .onUpdate(function() { // Called after tween.js updates 'coords'.
-                        clickScore4_1.y -= 5;
-                        clickScore4_2.y -= 5;
-                        clickScore4_3.y -= 5;
-                        clickScore4_4.y -= 5;
-                    })
-                    .start()
-                    .onComplete(function() {
-                        app.stage.removeChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4)
-                    }); // Start the tween immediately.
-                break;
-        }
-    }
     let basicSpineArray = []
     let king = [],
         Barbarian = [],
@@ -147,6 +84,8 @@ export const personAnimation = () => {
         Goblin.push(initCreate('Goblin', res));
         Hog_Rider.push(initCreate('Hog_Rider', res));
     }
+    let file = 0;
+    let data = 0;
 
     basicSpineArray = [king, Barbarian, Goblin, Hog_Rider];
 
@@ -190,37 +129,52 @@ export const personAnimation = () => {
 
     }
 
-
     app.stage.addChild(basicCageArray[0][0]);
 
+    const sounds = ['King.mp3', 'Barbarian.mp3', 'Goblin.mp3', 'Hog_Rider.mp3', ]
+
     var sound = new Howl({
-        src: ['./sounds/King.mp3']
+        src: [res[sounds[0]].url]
     });
 
     let tmpIndex = 1
+    const img_1_width = 92;
+    let audioAll = []
 
-    let audioAll = ['./sounds/King.mp3', './sounds/Barbarian.mp3', './sounds/Goblin.mp3', './sounds/Hog_Rider.mp3']
+    sounds.map((p) => {
+        audioAll.push(res[p].url)
+    })
+
+
+    let countdown = 15
+
+    let time,
+        speed,
+        oldtime;
+    oldtime = new Date().getTime();
+
+    let subCountDown = setInterval(() => {
+        if (countdown > 0) {
+            countdown--;
+        } else {
+            window.clearInterval(subCountDown);
+        }
+    }, 1000)
+
+
 
     function changeAnimation() {
         if (countdown > 0) {
-
-            // if (loadprogress) {
-            app.stage.swapChildren(background2, background1)
-
-            // console.log(`tmpIndex: ${tmpIndex}`)
-
             if (tmpIndex >= basicCageArray.length) {
                 for (const key in basicCageArray[basicCageArray.length - 1]) {
                     app.stage.removeChild(basicCageArray[basicCageArray.length - 1][key]);
                 }
-
                 tmpIndex = 0;
             } else {
                 for (const key in basicCageArray[tmpIndex - 1]) {
                     app.stage.removeChild(basicCageArray[tmpIndex - 1][key]);
                 }
             }
-
 
             if (data < 8) {
                 // app.stage.removeChild(basicCageArray[tmpIndex][1], basicCageArray[tmpIndex][2]);
@@ -245,7 +199,10 @@ export const personAnimation = () => {
     }
 
     let changeAni = setInterval(() => {
-        changeAnimation()
+        changeAnimation();
+
+        BG.changeBackground();
+
     }, "3000");
 
     function show() {
@@ -344,6 +301,127 @@ export const personAnimation = () => {
         file = 0; //更新档位
     }
 
+    // +1
+    function addoneanimate(time) {
+        requestAnimationFrame(addoneanimate);
+        TWEEN.update(time);
+    }
+    requestAnimationFrame(addoneanimate);
+
+    function addone(type) {
+        switch (type) {
+            case 1:
+                let clickScore1_1 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore1_1.position.set((app.screen.width - img_1_width) * 0.5, (app.screen.height - basicCageArray[0][0].height) * 0.45 - 20);
+                app.stage.addChild(clickScore1_1);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore1_1.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore1_1)
+                    }); // Start the tween immediately.
+                break;
+            case 2:
+                let clickScore2_1 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore2_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][1].height) * 0.5 - 30);
+                let clickScore2_2 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore2_2.position.set((app.screen.width - img_1_width) * 0.75, (app.screen.height - basicCageArray[0][2].height) * 0.5 - 30);
+                app.stage.addChild(clickScore2_1, clickScore2_2);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore2_1.y -= 5;
+                        clickScore2_2.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore2_2, clickScore2_1)
+                    }); // Start the tween immediately.
+                break;
+            case 4:
+                let clickScore4_1 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore4_1.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][3].height) * 0.65 - 10);
+                let clickScore4_2 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore4_2.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][4].height) * 0.65 - 10);
+                let clickScore4_3 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore4_3.position.set((app.screen.width - img_1_width) * 0.3, (app.screen.height - basicCageArray[0][5].height) * 0.20 - 10);
+                let clickScore4_4 = PIXI.Sprite.fromImage(res['./1.png'].url);
+                clickScore4_4.position.set((app.screen.width - img_1_width) * 0.8, (app.screen.height - basicCageArray[0][6].height) * 0.20 - 10);
+                app.stage.addChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4);
+                var coords = {
+                    x: 0,
+                    y: 0
+                }; // Start at (0, 0)
+                var twwen = new TWEEN.Tween(coords)
+                    .to({
+                        x: 0,
+                        y: 8
+                    }, 300)
+                    .easing(TWEEN.Easing.Quadratic.Out) // Use an easing function to make the animation smooth.
+                    .onUpdate(function() { // Called after tween.js updates 'coords'.
+                        clickScore4_1.y -= 5;
+                        clickScore4_2.y -= 5;
+                        clickScore4_3.y -= 5;
+                        clickScore4_4.y -= 5;
+                    })
+                    .start()
+                    .onComplete(function() {
+                        app.stage.removeChild(clickScore4_1, clickScore4_2, clickScore4_3, clickScore4_4)
+                    }); // Start the tween immediately.
+                break;
+        }
+    }
+
+    let textureArray = [];
+    let clickCount = 0;
+
+    for (let i = 0; i <= 150; i++) {
+        let texture
+        if (i < 10) {
+            texture = PIXI.Texture.fromImage(res[`Card_000${i}.png`].url);
+        } else if (i >= 10 && i < 100) {
+            texture = PIXI.Texture.fromImage(res[`Card_00${i}.png`].url);
+        } else {
+            texture = PIXI.Texture.fromImage(res[`Card_0${i}.png`].url);
+        }
+
+        textureArray.push(texture);
+    };
+
+    let mc = new PIXI.extras.AnimatedSprite(textureArray);
+    mc.anchor.set(0.5, 0.5); //修正定位点
+    // mc.position.set((app.screen.width - mc.width) * 0.5, (app.screen.height - mc.height) * 0.45);
+    mc.position.set(app.screen.width * 0.5, app.screen.height * 0.45)
+    mc.scale.set(1.5);
+    mc.animationSpeed = 0.5;
+    mc.loop = false;
+
+    mc.onComplete = () => {
+        document.getElementById('score').innerText = clickCount;
+        document.getElementById('end').style.zIndex = 1;
+        // document.getElementsByClassName('z_button').style.display = 'inline-block';
+        alphaPlay(document.getElementById('end'), "show");
+    };
+
     let timer = setInterval(function() {
         // 倒计时结束移除
         if (countdown == 0) {
@@ -353,8 +431,7 @@ export const personAnimation = () => {
                     app.stage.removeChild(basicCageArray[i][key]);
                 }
             }
-            app.stage.removeChild(timebar, timetext);
-
+            BG.removeTimeBorder();
             mc.play();
             app.stage.addChild(mc);
 
@@ -365,6 +442,7 @@ export const personAnimation = () => {
     }, 200)
 
 
+
     app
         .stage
         .on('pointertap', function() {
@@ -373,16 +451,15 @@ export const personAnimation = () => {
                 if (data < 8) {
                     addone(1);
                     clickCount++;
-                    scoretext.text = clickCount;
+                    BG.getClickCount(clickCount)
                 } else if (data >= 8 && data < 16) {
                     addone(2);
                     clickCount += 2;
-                    scoretext.text = clickCount;
-
+                    BG.getClickCount(clickCount)
                 } else {
                     addone(4);
                     clickCount += 4;
-                    scoretext.text = clickCount;
+                    BG.getClickCount(clickCount)
                 }
 
                 time = new Date().getTime();
@@ -398,4 +475,5 @@ export const personAnimation = () => {
                 time = null;
             }
         })
+
 }

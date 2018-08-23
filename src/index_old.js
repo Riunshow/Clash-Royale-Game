@@ -635,17 +635,15 @@ function onAssetsLoaded(loader, res) {
                 if (data < 8) {
                     addone(1);
                     clickCount++;
-                    scoretext.text = clickCount;
                 } else if (data >= 8 && data < 16) {
                     addone(2);
                     clickCount += 2;
-                    scoretext.text = clickCount;
-
                 } else {
                     addone(4);
                     clickCount += 4;
-                    scoretext.text = clickCount;
                 }
+                scoretext.text = clickCount;
+
 
                 time = new Date().getTime();
                 speed = time - oldtime;
