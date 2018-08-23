@@ -70,12 +70,16 @@ export const personAnimation = (app, res, alphaPlay) => {
         Goblin = [],
         Hog_Rider = [];
 
-    let basicSpineArray = [],
-        basicCageArray = [];
+    let basicSpineArray = []
+    let basicCageArray = [
+        [],
+        [],
+        [],
+        []
+    ];
 
     let file = 0;
     let data = 0;
-
     for (let i = 0; i < 7; i++) {
         king.push(initCreate('king', res));
         Barbarian.push(initCreate('Barbarian', res));
@@ -83,7 +87,10 @@ export const personAnimation = (app, res, alphaPlay) => {
         Hog_Rider.push(initCreate('Hog_Rider', res));
     }
 
+
     basicSpineArray = [king, Barbarian, Goblin, Hog_Rider];
+
+
 
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 7; j++) {
@@ -120,6 +127,28 @@ export const personAnimation = (app, res, alphaPlay) => {
 
     app.stage.addChild(basicCageArray[0][0]);
 
+    const sounds = ['King.mp3', 'Barbarian.mp3', 'Goblin.mp3', 'Hog_Rider.mp3', ]
+
+    var sound = new Howl({
+        src: [res[sounds[0]].url]
+    });
+
+    let tmpIndex = 1
+    const img_1_width = 92;
+    let audioAll = []
+
+    sounds.map((p) => {
+        audioAll.push(res[p].url)
+    })
+
+
+    let countdown = 15
+
+    let time,
+        speed,
+        oldtime;
+    oldtime = new Date().getTime();
+
     let subCountDown = setInterval(() => {
         if (countdown > 0) {
             countdown--;
@@ -127,6 +156,8 @@ export const personAnimation = (app, res, alphaPlay) => {
             window.clearInterval(subCountDown);
         }
     }, 1000)
+
+
 
     function changeAnimation() {
         if (countdown > 0) {
@@ -212,10 +243,10 @@ export const personAnimation = (app, res, alphaPlay) => {
                 }
                 basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
                 basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
-
-                for (let index = 3; index < 7; index++) {
-                    basicSpineArray[tmpIndex - 1][index].state.timeScale = 4;
-                }
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 4;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 4;
                 break;
             case 16:
                 basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.8;
@@ -232,10 +263,10 @@ export const personAnimation = (app, res, alphaPlay) => {
                 basicSpineArray[tmpIndex - 1][2].state.timeScale = 4.2;
                 break;
             case 20:
-                for (let index = 3; index < 7; index++) {
-                    basicSpineArray[tmpIndex - 1][index].state.timeScale = 6;
-                }
-
+                basicSpineArray[tmpIndex - 1][3].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][4].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][5].state.timeScale = 6;
+                basicSpineArray[tmpIndex - 1][6].state.timeScale = 6;
                 break;
         }
     }

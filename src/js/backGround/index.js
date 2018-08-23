@@ -17,7 +17,7 @@ export class PlayGround {
         this.load = PIXI.Sprite.fromImage(res['./load.png'].url)
 
         // 计时器
-        this.timetext = new PIXI.Text('0:15', {
+        this.timetext = new PIXI.Text('', {
             fontWeight: 'bold',
             fontStyle: 'italic',
             fontSize: 70,
@@ -27,6 +27,7 @@ export class PlayGround {
             stroke: '#000',
             strokeThickness: 7
         })
+        this.timetext.text = "0:15"
 
         // 圣水数字
         this.scoretext = new PIXI.Text('0', {
