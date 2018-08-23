@@ -1,8 +1,6 @@
 import 'pixi.js'
 import 'pixi-spine'
 
-import { spinesData } from '../../../assets/spines'
-
 export class PersonAnimation {
     constructor(app, res) {
         this.app = app

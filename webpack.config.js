@@ -5,6 +5,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
 module.exports = {
+    // devtool: 'cheap-source-map',
     entry: './src/index.js',
     output: {
         path: path.resolve(__dirname, './dist/'),
@@ -93,7 +94,7 @@ module.exports = {
         //     filename: 'js/base.js'
         // })
         // 清理 dist
-        new CleanWebpackPlugin('dist/*.*', {
+        new CleanWebpackPlugin('dist/', {
             root: __dirname,
             verbose: true,
             dry: false

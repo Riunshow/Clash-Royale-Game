@@ -18,22 +18,14 @@ export const personAnimation = (app, res, alphaPlay) => {
         switch (name) {
             case 'king':
                 let basicKing = new PIXI.spine.Spine(res.King.spineData);
-                basicKing
-                    .skeleton
-                    .setSkinByName('King');
-                basicKing
-                    .skeleton
-                    .setSlotsToSetupPose();
+                basicKing.skeleton.setSkinByName('King');
+                basicKing.skeleton.setSlotsToSetupPose();
 
                 return basicKing;
             case 'Hog_Rider':
                 let basicHog_Rider = new PIXI.spine.Spine(res.Hog_Rider.spineData);
-                basicHog_Rider
-                    .skeleton
-                    .setSkinByName('Hog_Rider');
-                basicHog_Rider
-                    .skeleton
-                    .setSlotsToSetupPose();
+                basicHog_Rider.skeleton.setSkinByName('Hog_Rider');
+                basicHog_Rider.skeleton.setSlotsToSetupPose();
 
                 return basicHog_Rider;
             case 'Goblin':
@@ -73,28 +65,25 @@ export const personAnimation = (app, res, alphaPlay) => {
     }
 
 
-    let basicSpineArray = []
     let king = [],
         Barbarian = [],
         Goblin = [],
         Hog_Rider = [];
+
+    let basicSpineArray = [],
+        basicCageArray = [];
+
+    let file = 0;
+    let data = 0;
+
     for (let i = 0; i < 7; i++) {
         king.push(initCreate('king', res));
         Barbarian.push(initCreate('Barbarian', res));
         Goblin.push(initCreate('Goblin', res));
         Hog_Rider.push(initCreate('Hog_Rider', res));
     }
-    let file = 0;
-    let data = 0;
 
     basicSpineArray = [king, Barbarian, Goblin, Hog_Rider];
-
-    let basicCageArray = [
-        [],
-        [],
-        [],
-        []
-    ];
 
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 7; j++) {
@@ -131,28 +120,6 @@ export const personAnimation = (app, res, alphaPlay) => {
 
     app.stage.addChild(basicCageArray[0][0]);
 
-    const sounds = ['King.mp3', 'Barbarian.mp3', 'Goblin.mp3', 'Hog_Rider.mp3', ]
-
-    var sound = new Howl({
-        src: [res[sounds[0]].url]
-    });
-
-    let tmpIndex = 1
-    const img_1_width = 92;
-    let audioAll = []
-
-    sounds.map((p) => {
-        audioAll.push(res[p].url)
-    })
-
-
-    let countdown = 15
-
-    let time,
-        speed,
-        oldtime;
-    oldtime = new Date().getTime();
-
     let subCountDown = setInterval(() => {
         if (countdown > 0) {
             countdown--;
@@ -160,8 +127,6 @@ export const personAnimation = (app, res, alphaPlay) => {
             window.clearInterval(subCountDown);
         }
     }, 1000)
-
-
 
     function changeAnimation() {
         if (countdown > 0) {
@@ -247,10 +212,10 @@ export const personAnimation = (app, res, alphaPlay) => {
                 }
                 basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.6;
                 basicSpineArray[tmpIndex - 1][2].state.timeScale = 2.6;
-                basicSpineArray[tmpIndex - 1][3].state.timeScale = 4;
-                basicSpineArray[tmpIndex - 1][4].state.timeScale = 4;
-                basicSpineArray[tmpIndex - 1][5].state.timeScale = 4;
-                basicSpineArray[tmpIndex - 1][6].state.timeScale = 4;
+
+                for (let index = 3; index < 7; index++) {
+                    basicSpineArray[tmpIndex - 1][index].state.timeScale = 4;
+                }
                 break;
             case 16:
                 basicSpineArray[tmpIndex - 1][1].state.timeScale = 2.8;
@@ -267,10 +232,10 @@ export const personAnimation = (app, res, alphaPlay) => {
                 basicSpineArray[tmpIndex - 1][2].state.timeScale = 4.2;
                 break;
             case 20:
-                basicSpineArray[tmpIndex - 1][3].state.timeScale = 6;
-                basicSpineArray[tmpIndex - 1][4].state.timeScale = 6;
-                basicSpineArray[tmpIndex - 1][5].state.timeScale = 6;
-                basicSpineArray[tmpIndex - 1][6].state.timeScale = 6;
+                for (let index = 3; index < 7; index++) {
+                    basicSpineArray[tmpIndex - 1][index].state.timeScale = 6;
+                }
+
                 break;
         }
     }

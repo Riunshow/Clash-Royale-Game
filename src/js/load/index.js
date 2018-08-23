@@ -8,20 +8,28 @@ import { soundsData } from '../../../assets/sounds'
 import { cardImg } from '../../../assets/cardImg'
 import { baseImg } from '../../../assets/img'
 
+
+let loadprogress = 0; //资源加载的进度
+let realyprogress = 0; //实际展示的进度
+let truepropress = 0; //如果为两秒时加载的进度
 // 进度条
-function loadProcess(hasGet, totalGet) {
-    let flag = document.getElementById('icon-flag'),
-        processBar = document.getElementById('process-bar'),
-        widthPercentage = Math.round(hasGet / totalGet * 100);
-    if (widthPercentage >= 100) {
-        widthPercentage = 100;
+let flag = document.getElementById('icon-flag');
+let processBar = document.getElementById('process-bar');
+
+const propresstime = setInterval(() => {
+    truepropress += 5;
+    realyprogress = (truepropress < loadprogress) ? truepropress : loadprogress;
+
+    if (realyprogress >= 100) {
+        realyprogress = 100;
+        window.clearInterval(propresstime);
+        buttonshow();
     }
-    flag.style.left = (widthPercentage - 1) + '%';
-    processBar.style.width = widthPercentage + '%';
-    if (widthPercentage == 0) {
-        processBar.style.borderStyle = 'none';
-    }
-};
+
+    processBar.style.width = realyprogress + '%';
+
+}, 100)
+
 
 // loading data
 export const pixiLoader =
@@ -33,11 +41,12 @@ export const pixiLoader =
     .on('progress', (loader, resource) => {
         const { progress } = loader;
         // console.log(`[${progress}%]${resource.name}`)
-        loadProcess(progress, 100);
+        loadprogress = Math.round(progress)
     })
-    .load(buttonshow);
+    .load()
 
 function buttonshow() {
+
     document.querySelector('.xui-process').style.display = 'none';
     document.getElementById('begin_button').style.display = 'inline-block';
     console.log('load success')
